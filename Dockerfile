@@ -59,7 +59,7 @@ COPY --from=builder /var/www/html .
 # 4. ストレージとキャッシュディレクトリの権限設定
 # Webサーバーが書き込みできるように権限を設定 (デプロイ環境に応じて調整が必要)
 RUN chown -R www-data:www-data /var/www/html/storage \
-    && chown -R www-data:www-data /var/www/html/bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html/bootstrap/cache
 
 # RUN chown -R www-data:www-data /var/www/html
 
