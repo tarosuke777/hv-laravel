@@ -1,0 +1,20 @@
+# Dockerfile.nginx
+
+# Nginxのベースイメージを使用
+FROM nginx:alpine
+
+# 1. PHPビルドコンテナからコードをコピー
+# 'app' サービス（PHP-FPM）がビルドしたLaravelコードをすべてコピー
+COPY --from=laravel-app:latest /var/www/html /var/www/html
+
+# 2. Nginxの設定ファイルをコピー
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# 3. Webサーバーのルートをpublicに設定するため、WORKDIRをLaravelのルートに設定
+WORKDIR /var/www/html
+
+# 4. 適切な権限を設定（www-dataユーザーがnginxコンテナ内にもいる場合）
+RUN chown -R nginx:nginx /var/www/html # nginxユーザーに所有者を変更
+
+EXPOSE 8001
+CMD ["nginx", "-g", "daemon off;"]
