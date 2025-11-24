@@ -8,7 +8,7 @@ services:
         image: laravel-app:latest
         container_name: laravel-app
         volumes:
-            - D:\\tmp\\videos:/var/www/html/storage/app/public/videos:rw
+            - D:\\movie\\Captures:/var/www/html/storage/app/public/videos:rw
           # - /mnt/c/dev/videos:/var/www/html/storage/app/public/videos:rw
     nginx:
         build:
@@ -16,10 +16,10 @@ services:
             dockerfile: Dockerfile.nginx
         container_name: laravel-nginx
         ports:
-            - "8080:8080"
+            - "80:80"
         volumes:
             # - ./nginx.conf:/etc/nginx/conf.d/default.conf # Nginx設定ファイルをコピー
             # - /mnt/c/dev/videos:/var/www/html/storage/app/public/videos:rw
-            - D:\\tmp\\videos:/var/www/html/storage/app/public/videos:rw
+            - D:\\movie\\Captures:/var/www/html/storage/app/public/videos:rw
         depends_on:
             - app # PHPコンテナが起動してからNginxを起動
