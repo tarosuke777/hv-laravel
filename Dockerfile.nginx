@@ -16,5 +16,5 @@ WORKDIR /var/www/html
 # 4. 適切な権限を設定（www-dataユーザーがnginxコンテナ内にもいる場合）
 RUN chown -R nginx:nginx /var/www/html # nginxユーザーに所有者を変更
 
-EXPOSE 8001
+EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]
