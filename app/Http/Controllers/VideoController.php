@@ -17,7 +17,19 @@ class VideoController extends Controller
         $allFiles = Storage::disk('public')->files($directory);
 
         $mp4Files = array_filter($allFiles, function ($file) {
-            return pathinfo($file, PATHINFO_EXTENSION) === 'mp4';
+
+            $fileName = basename($file);
+            $extension = pathinfo($file, PATHINFO_EXTENSION);
+            $isMp4 = ($extension === 'mp4');
+
+            Log::info('MP4 Filter Check', [
+                'fileName' => $fileName,
+                'fullPath' => $file,
+                'extension' => $extension,
+                'isMp4' => $isMp4 ? 'PASS' : 'FAIL'
+            ]);
+
+            return $isMp4;
         });
 
         $extractTitle = function ($filePath) {
