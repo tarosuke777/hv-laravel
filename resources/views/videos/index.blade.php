@@ -12,6 +12,10 @@
     <h1 class="text-3xl font-bold text-gray-900 mb-6">🎬 {{ $directory }} ディレクトリの MP4 ファイル一覧</h1>
     
     @if (count($videoList) > 0)
+        <div class="mb-8">
+            {{ $videos->links() }}
+        </div>
+
         {{-- Tailwind CSS のクラスで横3列のグリッドレイアウトを定義 --}}
         <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0 m-0">
             @foreach ($videoList as $video)
@@ -34,6 +38,10 @@
                 </li>
             @endforeach
         </ul>
+
+        <div class="mt-8">
+            {{ $videos->links() }}
+        </div>
     @else
         <p class="text-gray-500">MP4 ファイルが見つかりません。</p>
     @endif
