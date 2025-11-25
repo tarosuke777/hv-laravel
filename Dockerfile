@@ -69,6 +69,8 @@ RUN php artisan storage:link
 RUN php artisan migrate --force
 RUN chmod -R 777 /var/www/html/database
 
+RUN php artisan optimize:clear
+
 # 5. ポート公開と起動 (PHP-FPMのデフォルトポート)
 EXPOSE 9000
 CMD ["php-fpm"]
