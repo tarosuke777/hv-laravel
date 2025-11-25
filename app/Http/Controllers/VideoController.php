@@ -20,6 +20,28 @@ class VideoController extends Controller
             return pathinfo($file, PATHINFO_EXTENSION) === 'mp4';
         });
 
+        $extractTitle = function ($filePath) {
+            $fileName = basename($filePath, '.mp4');
+            // タイムスタンプ部分を削除してタイトルを抽出
+            return preg_replace('/\s\d{4}-\d{2}-\d{2}\s\d{2}-\d{2}-\d{2}$/', '', $fileName);
+        };
+
+        $uniqueTitles = collect($mp4Files)
+            ->map($extractTitle) // タイトルを抽出
+            ->unique()           // 重複を除去
+            ->sort()             // タイトル順にソート
+            ->values();          // キーをリセット
+
+        $selectedTitle = $request->query('title'); // URLの ?title=xxx を取得
+
+        if ($selectedTitle) {
+            $mp4Files = array_filter($mp4Files, function ($filePath) use ($selectedTitle, $extractTitle) {
+                // ファイルのタイトルが選択されたタイトルと一致するか比較
+                return $extractTitle($filePath) === $selectedTitle;
+            });
+        }
+
+
         $perPage = 6;
         $page = $request->get('page', 1);
 
@@ -32,7 +54,7 @@ class VideoController extends Controller
             $items->count(), // 全アイテム数
             $perPage,
             $page,
-            ['path' => $request->url()] // ページネーションリンクの基本URLを設定
+            ['path' => $request->url(), 'query' => $request->query()] // ページネーションリンクの基本URLを設定
         );
 
         $videoList = array_map(function ($filePath) {
@@ -50,7 +72,13 @@ class VideoController extends Controller
             ];
         }, $videoPaginator->items());
 
-        return view('videos.index', ['videoList' => $videoList, 'directory' => $directory, 'videos' => $videoPaginator]);
+        return view('videos.index', [
+            'videoList' => $videoList, 
+            'directory' => $directory, 
+            'videos' => $videoPaginator,
+            'uniqueTitles' => $uniqueTitles,
+            'selectedTitle' => $selectedTitle,
+        ]);
 
     }
 }
