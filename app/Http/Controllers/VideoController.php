@@ -16,6 +16,12 @@ class VideoController extends Controller
         $directory = 'videos';
         $allFiles = Storage::disk('public')->files($directory);
 
+        Log::info('Storage All Files List', [
+            'count' => count($allFiles),
+            // 全リストをログに出力（リストが非常に長い場合は注意）
+            'files' => $allFiles 
+        ]);
+
         $mp4Files = array_filter($allFiles, function ($file) {
 
             $fileName = basename($file);
