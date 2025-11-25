@@ -66,23 +66,26 @@
                     
                     {{-- 動画プレーヤー --}}
                     {{-- 動画幅をカードに合わせ、シークバー問題解決後のクラスを適用 --}}
-                    <video id="myVideo" controls class="w-full h-auto rounded-lg mb-4" preload="metadata">
+                    <video controls class="w-full h-auto rounded-lg mb-4 video-preview-target" preload="metadata">
                         <source src="{{ $video['url'] }}" type="video/mp4">
                         お使いのブラウザは動画タグに対応していません。
                     </video>
                     
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
-                            const videoElement = document.getElementById('myVideo');
+                            const videoElements = document.querySelectorAll('.video-preview-target');
+                            // const videoElement = document.getElementById('myVideo');
 
-                            // 動画のデータが十分ロードされ、再生準備が整ったときに実行
-                            videoElement.addEventListener('loadeddata', function() {
-                                // readyStateが2 (HAVE_CURRENT_DATA) 以上であることを確認
-                                if (videoElement.readyState >= 2) {
-                                    // 再生を一時停止し、最初のフレームを表示
-                                    videoElement.currentTime = 0; // 念のため0秒にシーク
-                                    videoElement.pause();
-                                }
+                            videoElements.forEach(function(videoElement) {
+                                // 動画のデータが十分ロードされ、再生準備が整ったときに実行
+                                videoElement.addEventListener('loadeddata', function() {
+                                    // readyStateが2 (HAVE_CURRENT_DATA) 以上であることを確認
+                                    if (videoElement.readyState >= 2) {
+                                        // 再生を一時停止し、最初のフレームを表示
+                                        videoElement.currentTime = 0; // 念のため0秒にシーク
+                                        videoElement.pause();
+                                    }
+                                });
                             });                            
                         });
                     </script>
