@@ -22,8 +22,17 @@ class VideoController extends Controller
 
         $extractTitle = function ($filePath) {
             $fileName = basename($filePath, '.mp4');
+
             // タイムスタンプ部分を削除してタイトルを抽出
-            return preg_replace('/\s\d{4}-\d{2}-\d{2}\s\d{2}-\d{2}-\d{2}$/', '', $fileName);
+            $title = preg_replace('/\s\d{4}-\d{2}-\d{2}\s\d{2}-\d{2}-\d{2}$/', '', $fileName);
+            
+            // ★★★ ログ埋め込み箇所 1: タイトル抽出の確認 ★★★
+            Log::info('Title Extraction Check', [
+                'filePath' => $filePath,
+                'extractedTitle' => $title
+            ]);
+            
+            return $title;
         };
 
         $uniqueTitles = collect($mp4Files)
@@ -36,8 +45,19 @@ class VideoController extends Controller
 
         if ($selectedTitle) {
             $mp4Files = array_filter($mp4Files, function ($filePath) use ($selectedTitle, $extractTitle) {
+                $fileTitle = $extractTitle($filePath); // タイトルを取得
+                $isMatch = ($fileTitle === $selectedTitle); // 比較結果
+
+                // ★★★ ログ埋め込み箇所 2: フィルタリング判定の確認 ★★★
+                Log::info('Filtering Check', [
+                    'file' => basename($filePath),
+                    'fileTitle' => $fileTitle,
+                    'selectedTitle' => $selectedTitle,
+                    'isMatch' => $isMatch ? 'PASS' : 'FAIL'
+                ]);
+
                 // ファイルのタイトルが選択されたタイトルと一致するか比較
-                return $extractTitle($filePath) === $selectedTitle;
+                return $isMatch;
             });
         }
 
