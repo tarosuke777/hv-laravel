@@ -10,6 +10,7 @@ services:
         volumes:
             - D:\\movie\\Captures:/var/www/html/storage/app/public/videos:rw
           # - /mnt/c/dev/videos:/var/www/html/storage/app/public/videos:rw
+        restart: always
     nginx:
         build:
             context: .
@@ -23,3 +24,4 @@ services:
             - D:\\movie\\Captures:/var/www/html/storage/app/public/videos:rw
         depends_on:
             - app # PHPコンテナが起動してからNginxを起動
+        restart: always
