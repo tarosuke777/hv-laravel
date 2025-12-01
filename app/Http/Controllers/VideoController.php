@@ -9,6 +9,8 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
+use App\Models\Video;
+
 class VideoController extends Controller
 {
     public function index(Request $request)
@@ -118,5 +120,23 @@ class VideoController extends Controller
             'selectedTitle' => $selectedTitle,
         ]);
 
+    }
+
+    /**
+     * 動画一覧を表示し、検索機能を提供します。
+     */
+    public function indexV2(Request $request)
+    {
+        // ① リクエストから検索キーワードを取得
+        $search = $request->input('search');
+
+        // ② Eloquentを使用してデータ取得
+        // 'search'スコープ（Modelで定義）を使用して検索条件を適用し、ページネーション（10件ごと）を適用
+        $videos = Video::search($search)
+                       ->orderBy('created_at', 'desc') // 新しい順に並べ替え
+                       ->paginate(10);
+
+        // ③ ビューにデータを渡して表示
+        return view('videos.indexV2', compact('videos', 'search'));
     }
 }
