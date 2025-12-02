@@ -7,6 +7,14 @@
 <body>
     <h1>🎥 動画一覧 V2</h1>
 
+    @foreach ($uniqueTitles as $title)
+        {{-- リンクURL: /videos?title=【URLエンコードされたタイトル】 --}}
+        <a href="{{ route('videos.index', ['title' => $title]) }}"
+        class="px-3 py-1 text-sm rounded-full transition duration-150 bg-gray-200 text-gray-700 hover:bg-gray-300">
+        {{ $title }}
+        </a>
+    @endforeach
+
     {{-- route('videos.index') の名前付きルートは変更していません --}}
     <form action="{{ route('videos.index') }}" method="GET">
         <input type="text" 

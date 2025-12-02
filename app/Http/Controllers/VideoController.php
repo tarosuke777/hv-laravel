@@ -127,6 +127,8 @@ class VideoController extends Controller
      */
     public function indexV2(Request $request)
     {
+        $uniqueTitles = Video::uniqueTitles()->pluck('title')->toArray();
+
         // ① リクエストから検索キーワードを取得
         $search = $request->input('search');
 
@@ -137,6 +139,6 @@ class VideoController extends Controller
                        ->paginate(10);
 
         // ③ ビューにデータを渡して表示
-        return view('videos.indexV2', compact('videos', 'search'));
+        return view('videos.indexV2', compact('videos', 'search', 'uniqueTitles'));
     }
 }

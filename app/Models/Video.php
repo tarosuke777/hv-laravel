@@ -26,4 +26,15 @@ class Video extends Model
         }
         return $query;
     }
+
+    /**
+     * 一意のタイトルのみを取得するスコープ
+     * 
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeUniqueTitles($query)
+    {
+        return $query->select('title')->distinct();
+    }
 }
