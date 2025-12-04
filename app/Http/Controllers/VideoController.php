@@ -130,15 +130,14 @@ class VideoController extends Controller
         $uniqueTitles = Video::uniqueTitles()->pluck('title')->toArray();
 
         // ① リクエストから検索キーワードを取得
-        $search = $request->input('search');
+        $selectedTitle = $request->input('title');
 
         // ② Eloquentを使用してデータ取得
-        // 'search'スコープ（Modelで定義）を使用して検索条件を適用し、ページネーション（10件ごと）を適用
-        $videos = Video::search($search)
+        $videos = Video::searchByTitle($selectedTitle)
                        ->orderBy('created_at', 'desc') // 新しい順に並べ替え
                        ->paginate(10);
 
         // ③ ビューにデータを渡して表示
-        return view('videos.indexV2', compact('videos', 'search', 'uniqueTitles'));
+        return view('videos.indexV2', compact('videos', 'selectedTitle', 'uniqueTitles'));
     }
 }

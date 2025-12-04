@@ -15,14 +15,11 @@ class Video extends Model
         'file_name',
     ];
 
-    public function scopeSearch($query, $search)
+    public function scopeSearchByTitle($query, $title)
     {
         // $search が空でなければ検索条件を適用
-        if ($search) {
-            $query->where(function ($query) use ($search) {
-                $query->where('titile', 'LIKE', "%{$search}%") // タイトルを部分一致で検索
-                      ->orWhere('name', 'LIKE', "%{$search}%");  // 名前（投稿者名など）を部分一致で検索
-            });
+        if ($title) {
+            $query->where('title', 'LIKE', "%{$title}%");
         }
         return $query;
     }
