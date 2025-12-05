@@ -35,4 +35,6 @@ return [
         ],
     ],
 
+    'video_host' => env('VIDEO_BASE_URL', 'http://192.168.10.11/'),
+
 ];

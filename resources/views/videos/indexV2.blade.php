@@ -34,7 +34,7 @@
                 {{-- 1. 全て表示リンク --}}
                 <a href="{{ route('videos.index') }}" 
                 class="px-3 py-1 text-sm rounded-full transition duration-150 
-                        {{ $selectedTitle ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' : 'bg-blue-600 text-white font-bold' }}">
+                         {{ $selectedTitle ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' : 'bg-blue-600 text-white font-bold' }}">
                     全ての動画 ({{ count($uniqueTitles) }})
                 </a>
 
@@ -43,7 +43,7 @@
                     {{-- リンクURL: /videos?title=【URLエンコードされたタイトル】 --}}
                     <a href="{{ route('videos.index', ['title' => $title]) }}"
                     class="px-3 py-1 text-sm rounded-full transition duration-150 
-                            {{ $selectedTitle === $title ? 'bg-blue-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                             {{ $selectedTitle === $title ? 'bg-blue-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
                         {{ $title }}
                     </a>
                 @endforeach
@@ -51,7 +51,7 @@
         </div>
     </div>
 
-    @if (count($videos) > 0)
+    @if ($videos->count() > 0)
         <div class="mb-8">
             {{ $videos->appends(request()->query())->links() }}
         </div>
@@ -62,19 +62,19 @@
                 <li class="bg-white shadow-xl rounded-xl overflow-hidden p-5 flex flex-col items-center">
                     
                     {{-- 動画タイトル --}}
-                    <strong class="text-lg font-semibold mb-3">{{ $video['name'] }}</strong>
+                    {{-- 修正: 配列アクセスからプロパティアクセスへ --}}
+                    <strong class="text-lg font-semibold mb-3">{{ $video->name }}</strong>
                     
                     {{-- 動画プレーヤー --}}
-                    {{-- 動画幅をカードに合わせ、シークバー問題解決後のクラスを適用 --}}
+                    {{-- 修正: $video['url'] から $video->external_url へ --}}
                     <video controls class="w-full h-auto rounded-lg mb-4 video-preview-target" preload="metadata">
-                        <source src="{{ $video['url'] }}" type="video/mp4">
+                        <source src="{{ $video->external_url }}" type="video/mp4">
                         お使いのブラウザは動画タグに対応していません。
                     </video>
                     
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             const videoElements = document.querySelectorAll('.video-preview-target');
-                            // const videoElement = document.getElementById('myVideo');
 
                             videoElements.forEach(function(videoElement) {
                                 // 動画のデータが十分ロードされ、再生準備が整ったときに実行
@@ -86,12 +86,13 @@
                                         videoElement.pause();
                                     }
                                 });
-                            });                            
+                            });
                         });
                     </script>
 
                     {{-- 再生リンク --}}
-                    <a href="{{ $video['url'] }}" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium transition duration-150">
+                    {{-- 修正: $video['url'] から $video->external_url へ --}}
+                    <a href="{{ $video->external_url }}" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium transition duration-150">
                         別タブで再生
                     </a>
                 </li>

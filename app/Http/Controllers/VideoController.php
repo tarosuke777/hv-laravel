@@ -137,6 +137,17 @@ class VideoController extends Controller
                        ->orderBy('created_at', 'desc') // 新しい順に並べ替え
                        ->paginate(10);
 
+        Log::info('--- 動画一覧データ (indexV2) ---');
+        // $videosはLengthAwarePaginatorオブジェクトなので、getCollection()で内部のデータを取得し、
+        // toArray()で配列に変換するとログが見やすくなります。
+        Log::info('動画データ:', $videos->getCollection()->toArray());
+        Log::info('ページネーション情報:', [
+            'total' => $videos->total(),
+            'currentPage' => $videos->currentPage(),
+            'perPage' => $videos->perPage(),
+        ]);
+        Log::info('---------------------------------');
+
         // ③ ビューにデータを渡して表示
         return view('videos.indexV2', compact('videos', 'selectedTitle', 'uniqueTitles'));
     }
