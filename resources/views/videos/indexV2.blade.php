@@ -32,7 +32,7 @@
             <div class="flex flex-wrap gap-2">
 
                 {{-- 1. 全て表示リンク --}}
-                <a href="{{ route('videos.index') }}" 
+                <a href="{{ route('videos.indexV2') }}" 
                 class="px-3 py-1 text-sm rounded-full transition duration-150 
                          {{ $selectedTitle ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' : 'bg-blue-600 text-white font-bold' }}">
                     全ての動画 ({{ count($uniqueTitles) }})
@@ -41,7 +41,7 @@
                 {{-- 2. 重複のないタイトルごとのリンク --}}
                 @foreach ($uniqueTitles as $title)
                     {{-- リンクURL: /videos?title=【URLエンコードされたタイトル】 --}}
-                    <a href="{{ route('videos.index', ['title' => $title]) }}"
+                    <a href="{{ route('videos.indexV2', ['title' => $title]) }}"
                     class="px-3 py-1 text-sm rounded-full transition duration-150 
                              {{ $selectedTitle === $title ? 'bg-blue-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
                         {{ $title }}
@@ -63,7 +63,7 @@
                     
                     {{-- 動画タイトル --}}
                     {{-- 修正: 配列アクセスからプロパティアクセスへ --}}
-                    <strong class="text-lg font-semibold mb-3">{{ $video->name }}</strong>
+                    <strong class="text-lg font-semibold mb-3">{{ $video->file_name }}</strong>
                     
                     {{-- 動画プレーヤー --}}
                     {{-- 修正: $video['url'] から $video->external_url へ --}}
