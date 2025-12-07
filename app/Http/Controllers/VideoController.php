@@ -134,8 +134,8 @@ class VideoController extends Controller
 
         // ② Eloquentを使用してデータ取得
         $videos = Video::searchByTitle($selectedTitle)
-                       ->orderBy('created_at', 'desc') // 新しい順に並べ替え
-                       ->paginate(10);
+                       ->orderBy('created_at', 'asc')
+                       ->paginate(9);
 
         Log::info('--- 動画一覧データ (indexV2) ---');
         // $videosはLengthAwarePaginatorオブジェクトなので、getCollection()で内部のデータを取得し、
