@@ -19,6 +19,9 @@ RUN apk update && apk add --no-cache \
 # 2. PHP拡張機能の有効化
 # mysqli, pdo_mysql, zip, gd, opcache, exif など、Laravelで一般的に使用される拡張機能を有効化
 # RUN docker-php-ext-install pdo_mysql opcache zip bcmath exif pcntl gd
+# RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install pdo pdo_mysql mysqli
+
 
 # 3. Composerのインストール
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -45,7 +48,9 @@ RUN apk update && apk add --no-cache \
     libpq \
     # gd のランタイム依存関係
     libpng \
-    libjpeg-turbo
+    libjpeg-turbo 
+
+RUN docker-php-ext-install pdo pdo_mysql mysqli
 
 # 2. ビルドステージでコンパイルされた拡張機能とアプリケーションコードをコピー
 COPY --from=builder /usr/local/etc/php/conf.d/docker-php-ext-*.ini /usr/local/etc/php/conf.d/
@@ -66,11 +71,15 @@ RUN chown -R www-data:www-data /var/www/html/storage \
 # ストレージのシンボリックリンクを作成
 RUN php artisan storage:link
 
-RUN php artisan migrate --force
+# RUN php artisan migrate --force
 RUN chmod -R 777 /var/www/html/database
 
-RUN php artisan optimize:clear
+# RUN php artisan optimize:clear
+
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # 5. ポート公開と起動 (PHP-FPMのデフォルトポート)
 EXPOSE 9000
-CMD ["php-fpm"]
+# CMD ["php-fpm"]
+ENTRYPOINT ["entrypoint.sh"]
