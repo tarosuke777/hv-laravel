@@ -1,27 +1,32 @@
 version: '3.8'
 
 services:
-    app:
+    hv-ap:
         build:
             context: .
             dockerfile: Dockerfile
         image: laravel-app:latest
-        container_name: laravel-app
-        volumes:
-            - D:\\movie\\Captures:/var/www/html/storage/app/public/videos:rw
+        # volumes:
+            # - D:\\movie\\Captures:/var/www/html/storage/app/public/videos:rw
           # - /mnt/c/dev/videos:/var/www/html/storage/app/public/videos:rw
         restart: always
-    nginx:
+        networks:
+            - home_network
+    hv-web:
         build:
             context: .
             dockerfile: Dockerfile.nginx
-        container_name: laravel-nginx
-        ports:
-            - "80:80"
-        volumes:
+        # ports:
+            # - "80:80"
+        # volumes:
             # - ./nginx.conf:/etc/nginx/conf.d/default.conf # Nginx設定ファイルをコピー
             # - /mnt/c/dev/videos:/var/www/html/storage/app/public/videos:rw
-            - D:\\movie\\Captures:/var/www/html/storage/app/public/videos:rw
+            # - D:\\movie\\Captures:/var/www/html/storage/app/public/videos:rw
         depends_on:
-            - app # PHPコンテナが起動してからNginxを起動
+            - hv-ap # PHPコンテナが起動してからNginxを起動
         restart: always
+        networks:
+            - home_network
+networks:
+  home_network:
+    external: true
