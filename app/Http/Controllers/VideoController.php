@@ -151,4 +151,43 @@ class VideoController extends Controller
         // ③ ビューにデータを渡して表示
         return view('videos.indexV2', compact('videos', 'selectedTitle', 'uniqueTitles'));
     }
+
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'file_name' => 'required|string|unique:videos,file_name',
+            'created_at' => 'required|date',
+            'updated_at' => 'required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        // $request->all() に created_at が含まれていれば、それが優先して保存されます
+        $video = Video::create($request->all());
+
+        return response()->json([
+            'message' => 'Video registered with custom timestamps',
+            'data' => $video
+        ], 201);
+    }
+
+    /**
+     * Videoモデル全体の最新作成日時をJSONで取得する
+     * * @return \Illuminate\Http\JsonResponse
+     */
+    public function fetchMaxTimestamp()
+    {
+        // scopeGetMaxCreatedを使用して最大値を取得
+        // スコープを呼び出す際は「scope」を除いたキャメルケースで記述します
+        $maxDate = Video::getMaxCreated();
+
+        return response()->json([
+            'status' => 'success',
+            'max_created_at' => $maxDate,
+        ]);
+    }
 }

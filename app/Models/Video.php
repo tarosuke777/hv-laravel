@@ -14,6 +14,13 @@ class Video extends Model
         'title',
         'name',
         'file_name',
+        'created_at', 
+        'updated_at'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     /**
@@ -57,5 +64,15 @@ class Video extends Model
     public function scopeUniqueTitles($query)
     {
         return $query->select('title')->distinct();
+    }
+
+    /**
+     * 現在のクエリ条件に基づいた最新の作成日時を取得する
+     * * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return string|null
+     */
+    public function scopeGetMaxCreated($query)
+    {
+        return $query->max('created_at');
     }
 }
