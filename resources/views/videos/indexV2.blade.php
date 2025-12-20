@@ -95,6 +95,7 @@
                             name: '{{ $video->name ?? '' }}', 
                             loading: false, 
                             showSuccess: false,
+                            errorMessage: '',
                             async updateVideoName() {
                                 this.loading = true;
                                 this.errorMessage = '';
