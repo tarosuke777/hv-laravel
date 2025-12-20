@@ -62,12 +62,11 @@
                 <li class="bg-white shadow-xl rounded-xl overflow-hidden p-5 flex flex-col items-center">
                     
                     {{-- 動画タイトル --}}
-                    {{-- 修正: 配列アクセスからプロパティアクセスへ --}}
-                    <strong class="text-lg font-semibold mb-3">{{ $video->file_name }}</strong>
+                    <!-- <strong class="text-lg font-semibold mb-3">{{ $video->file_name }}</strong> -->
                     <!-- <strong class="text-lg font-semibold mb-3">{{ $video->name ?? $video->file_name }}</strong> -->
+                    <strong class="text-lg font-semibold mb-3">{{ $video->title }}</strong>
                     
                     {{-- 動画プレーヤー --}}
-                    {{-- 修正: $video['url'] から $video->external_url へ --}}
                     <video controls class="w-full h-auto rounded-lg mb-4 video-preview-target" preload="metadata">
                         <source src="{{ $video->external_url }}" type="video/mp4">
                         お使いのブラウザは動画タグに対応していません。
