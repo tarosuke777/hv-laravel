@@ -1,4 +1,5 @@
 version: '3.8'
+name: hv
 
 services:
     hv-ap:
@@ -6,6 +7,20 @@ services:
             context: .
             dockerfile: Dockerfile
         image: laravel-app:latest
+        environment:
+            DB_CONNECTION: mysql
+            DB_HOST: home-db-mysql
+            DB_PORT: 3306
+            DB_DATABASE: hv
+            DB_USERNAME: hv
+            DB_PASSWORD_FILE: /run/secrets/mysql_user_password
+            APP_KEY_FILE: /run/secrets/secret_key_base
+            VIDEO_BASE_URL: http://192.168.10.11/
+            APP_URL: http://192.168.10.10/hv
+            ASSET_URL: http://192.168.10.10/hv
+        secrets:
+            - secret_key_base
+            - mysql_user_password
         # volumes:
             # - D:\\movie\\Captures:/var/www/html/storage/app/public/videos:rw
           # - /mnt/c/dev/videos:/var/www/html/storage/app/public/videos:rw
@@ -27,6 +42,11 @@ services:
         restart: always
         networks:
             - home_network
+secrets:
+  secret_key_base:
+    file: ${LARAVEL_SECRET_PATH}
+  mysql_user_password:
+    file: ${MYSQL_USER_PASSWORD_PATH}
 networks:
   home_network:
     external: true
