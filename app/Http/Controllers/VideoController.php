@@ -191,4 +191,27 @@ class VideoController extends Controller
             'max_created_at' => $maxDate,
         ]);
     }
+
+    // VideoController.php
+
+    public function updateName(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        try {
+            $video = Video::findOrFail($id);
+            $video->name = $request->name;
+            $video->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => '保存しました！',
+                'new_name' => $video->name
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false], 500);
+        }
+    }
 }
