@@ -48,6 +48,29 @@
                     </a>
                 @endforeach
             </div>
+    
+            {{-- ★ 追加：名前での絞り込みリスト --}}
+            @if($selectedTitle && count($uniqueNames) > 0)
+                <div class="mt-6 pt-4 border-t border-dashed border-gray-300">
+                    <p class="text-xs font-bold text-gray-500 mb-2">表示名でさらに絞り込む</p>
+                    <div class="flex flex-wrap gap-2">
+                        {{-- 全て表示（名前の絞り込み解除） --}}
+                        <a href="{{ route('videos.indexV2', ['title' => $selectedTitle]) }}" 
+                        class="px-3 py-1 text-sm rounded-full transition {{ !$selectedName ? 'bg-indigo-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                            全ての「{{ $selectedTitle }}」
+                        </a>
+
+                        @foreach ($uniqueNames as $name)
+                            <a href="{{ route('videos.indexV2', ['title' => $selectedTitle, 'name' => $name]) }}"
+                            class="px-3 py-1 text-sm rounded-full transition {{ $selectedName === $name ? 'bg-indigo-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                                {{ $name }}
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+
         </div>
     </div>
 

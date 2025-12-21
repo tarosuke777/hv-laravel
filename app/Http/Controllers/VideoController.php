@@ -132,11 +132,28 @@ class VideoController extends Controller
 
         // ① リクエストから検索キーワードを取得
         $selectedTitle = $request->input('title');
+        $selectedName = $request->input('name');
 
         // ② Eloquentを使用してデータ取得
-        $videos = Video::searchByTitle($selectedTitle)
-                       ->orderBy('created_at', 'asc')
-                       ->paginate(9);
+        $query = Video::searchByTitle($selectedTitle);
+
+        if ($selectedTitle && $selectedName) {
+            $query->where('name', $selectedName);
+        }
+
+        $videos = $query->orderBy('created_at', 'asc')
+                        ->paginate(9);
+
+        $uniqueNames = [];
+        if ($selectedTitle) {
+            // 現在のタイトルに属する、名前が設定されているデータのみ抽出
+            $uniqueNames = Video::searchByTitle($selectedTitle)
+                                ->whereNotNull('name')
+                                ->where('name', '!=', '')
+                                ->distinct()
+                                ->pluck('name')
+                                ->toArray();
+        }
 
         Log::info('--- 動画一覧データ (indexV2) ---');
         // $videosはLengthAwarePaginatorオブジェクトなので、getCollection()で内部のデータを取得し、
@@ -150,7 +167,7 @@ class VideoController extends Controller
         Log::info('---------------------------------');
 
         // ③ ビューにデータを渡して表示
-        return view('videos.indexV2', compact('videos', 'selectedTitle', 'uniqueTitles'));
+        return view('videos.indexV2', compact('videos', 'selectedTitle', 'uniqueTitles', 'selectedName', 'uniqueNames'));
     }
 
     public function store(Request $request)
