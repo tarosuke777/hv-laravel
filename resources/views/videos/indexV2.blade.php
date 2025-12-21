@@ -87,7 +87,7 @@
                     {{-- 動画タイトル --}}
                     <!-- <strong class="text-lg font-semibold mb-3">{{ $video->file_name }}</strong> -->
                     <!-- <strong class="text-lg font-semibold mb-3">{{ $video->name ?? $video->file_name }}</strong> -->
-                    <strong class="text-lg font-semibold mb-3">{{ $video->title }}</strong>
+                    <strong class="text-lg font-semibold mb-3">{{ $video->full_title }}</strong>
                     
                     {{-- 動画プレーヤー --}}
                     <video controls class="w-full h-auto rounded-lg mb-4 video-preview-target" preload="metadata">

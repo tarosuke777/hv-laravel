@@ -75,4 +75,12 @@ class Video extends Model
     {
         return $query->max('created_at');
     }
+
+    public function getFullTitleAttribute()
+{
+    // name が空でなければ「タイトル - 名前」、空なら「タイトル」のみ返す
+    return $this->name 
+        ? "{$this->title} - {$this->name}" 
+        : $this->title;
+}
 }
