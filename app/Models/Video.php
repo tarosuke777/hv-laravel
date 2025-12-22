@@ -26,7 +26,7 @@ class Video extends Model
     public function scopeSearch($query, array $params)
     {
         return $query
-            ->when($params['title'] ?? null, fn($q, $title) => $q->where('title', 'LIKE', "%{$title}%"))
+            ->when($params['title'] ?? null, fn($q, $title) => $q->where('title',$title))
             ->when($params['name'] ?? null, fn($q, $name) => $q->where('name', $name));
     }
 
