@@ -134,7 +134,7 @@ class VideoController extends Controller
         $selectedName = $request->input('name');
 
         // ② Eloquentを使用してデータ取得
-        $query = Video::search(['title' => $selectedTitle], ['name' => $selectedName]);
+        $query = Video::search($request->only(['title', 'name']));
         $videos = $query->orderBy('created_at', 'asc')
                         ->paginate(9);
 
