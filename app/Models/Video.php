@@ -29,23 +29,6 @@ class Video extends Model
      */
     protected $appends = ['external_url'];
 
-    /**
-     * file_name から外部URLを生成するアクセサ
-     * * ビューで $video->external_url としてアクセス可能
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
-    protected function externalUrl(): Attribute
-    {
-        // ベースURLを定義。ベストプラクティスとしてconfig()から取得することを推奨
-        // 今回はハードコード（直書き）しますが、プロジェクトの設定に合わせて変更してください
-        $baseUrl = config('services.video_host', 'http://192.168.10.11/');
-
-        return Attribute::make(
-            // get: アクセスされたときに実行されるロジック
-            get: fn (mixed $value, array $attributes) => $baseUrl . $attributes['file_name'],
-        );
-    }
-
     public function scopeSearchByTitle($query, $title)
     {
         // $search が空でなければ検索条件を適用
@@ -76,11 +59,30 @@ class Video extends Model
         return $query->max('created_at');
     }
 
-    public function getFullTitleAttribute()
-{
-    // name が空でなければ「タイトル - 名前」、空なら「タイトル」のみ返す
-    return $this->name 
-        ? "{$this->title} - {$this->name}" 
-        : $this->title;
-}
+    /**
+     * file_name から外部URLを生成するアクセサ
+     * ビューで $video->external_url としてアクセス可能
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function externalUrl(): Attribute
+    {
+        // ベースURLを定義。ベストプラクティスとしてconfig()から取得することを推奨
+        // 今回はハードコード（直書き）しますが、プロジェクトの設定に合わせて変更してください
+        $baseUrl = config('services.video_host', 'http://192.168.10.11/');
+
+        return Attribute::make(
+            // get: アクセスされたときに実行されるロジック
+            get: fn (mixed $value, array $attributes) => $baseUrl . $attributes['file_name'],
+        );
+    }
+
+   protected function fullTitle(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => 
+                $attributes['name'] 
+                    ? "{$attributes['title']} - {$attributes['name']}" 
+                    : $attributes['title']
+        );
+    }
 }
