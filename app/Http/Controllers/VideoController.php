@@ -137,15 +137,7 @@ class VideoController extends Controller
                         ->paginate(9);
 
         $uniqueTitles = Video::uniqueTitles()->pluck('title')->toArray();
-        $uniqueNames = [];
-        if ($selectedTitle) {
-            // 現在のタイトルに属する、名前が設定されているデータのみ抽出
-            $uniqueNames = Video::search(['title' => $selectedTitle])
-                                ->hasName()
-                                ->distinct()
-                                ->pluck('name')
-                                ->toArray();
-        }
+        $uniqueNames = Video::getUniqueNamesByTitle($selectedTitle);
 
         return view('videos.indexV2', compact('videos', 'selectedTitle', 'uniqueTitles', 'selectedName', 'uniqueNames'));
     }

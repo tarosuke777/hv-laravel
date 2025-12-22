@@ -47,6 +47,22 @@ class Video extends Model
     }
 
     /**
+     * タイトルに基づいて、重複のない名前リストを配列で取得する
+     */
+    public static function getUniqueNamesByTitle(?string $title): array
+    {
+        if (empty($title)) {
+            return [];
+        }
+
+        return self::search(['title' => $title])
+                    ->hasName()
+                    ->distinct()
+                    ->pluck('name')
+                    ->toArray();
+    }
+
+    /**
      * 現在のクエリ条件に基づいた最新の作成日時を取得する
      * * @param \Illuminate\Database\Eloquent\Builder $query
      * @return string|null
