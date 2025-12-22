@@ -31,11 +31,7 @@ class Video extends Model
 
     public function scopeSearchByTitle($query, $title)
     {
-        // $search が空でなければ検索条件を適用
-        if ($title) {
-            $query->where('title', 'LIKE', "%{$title}%");
-        }
-        return $query;
+        return $query->when($title, fn ($q) => $q->where('title', 'LIKE', "%{$title}%"));
     }
 
     /**
