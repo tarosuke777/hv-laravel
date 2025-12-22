@@ -76,7 +76,7 @@ class Video extends Model
         );
     }
 
-   protected function fullTitle(): Attribute
+    protected function fullTitle(): Attribute
     {
         return Attribute::make(
             get: fn (mixed $value, array $attributes) => 
