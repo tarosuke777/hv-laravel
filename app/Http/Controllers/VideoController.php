@@ -128,17 +128,17 @@ class VideoController extends Controller
      */
     public function indexV2(Request $request)
     {
-        $uniqueTitles = Video::uniqueTitles()->pluck('title')->toArray();
 
         // ① リクエストから検索キーワードを取得
         $selectedTitle = $request->input('title');
         $selectedName = $request->input('name');
 
         // ② Eloquentを使用してデータ取得
-        $query = Video::search($request->all());
+        $query = Video::search(['title' => $selectedTitle], ['name' => $selectedName]);
         $videos = $query->orderBy('created_at', 'asc')
                         ->paginate(9);
 
+        $uniqueTitles = Video::uniqueTitles()->pluck('title')->toArray();
         $uniqueNames = [];
         if ($selectedTitle) {
             // 現在のタイトルに属する、名前が設定されているデータのみ抽出
