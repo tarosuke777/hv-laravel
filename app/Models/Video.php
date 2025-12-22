@@ -23,6 +23,13 @@ class Video extends Model
         'updated_at' => 'datetime',
     ];
 
+    protected $appends = ['external_url'];
+
+    // --- Scopes (クエリの部品) ---
+
+    /**
+     * 汎用検索フィルタ
+     */
     public function scopeSearch($query, array $params)
     {
         return $query
@@ -30,30 +37,38 @@ class Video extends Model
             ->when($params['name'] ?? null, fn($q, $name) => $q->where('name', $name));
     }
 
+    /**
+     * 名前が有効（NULLでも空文字でもない）なデータに絞り込む
+     */
     public function scopeHasName($query)
     {
         return $query->whereNotNull('name')->where('name', '!=', '');
     }
 
     /**
-     * 一意のタイトルのみを取得するスコープ
-     * 
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * 最新の作成日時を取得する
      */
-    public function scopeUniqueTitles($query)
+    public function scopeGetMaxCreated($query)
     {
-        return $query->select('title')->distinct();
+        return $query->max('created_at');
+    }
+
+    // --- Static Methods (最終的なデータ取得) ---
+    
+    /**
+     * 重複のないタイトル一覧を取得
+     */
+    public static function getUniqueTitles(): array
+    {
+        return self::distinct()->pluck('title')->toArray();
     }
 
     /**
-     * タイトルに基づいて、重複のない名前リストを配列で取得する
+     * 特定のタイトルに紐づく、重複のない名前一覧を取得
      */
     public static function getUniqueNamesByTitle(?string $title): array
     {
-        if (empty($title)) {
-            return [];
-        }
+        if (empty($title)) return [];
 
         return self::search(['title' => $title])
                     ->hasName()
@@ -62,26 +77,11 @@ class Video extends Model
                     ->toArray();
     }
 
-    /**
-     * 現在のクエリ条件に基づいた最新の作成日時を取得する
-     * * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return string|null
-     */
-    public function scopeGetMaxCreated($query)
-    {
-        return $query->max('created_at');
-    }
+    // --- Attributes (アクセサ / 算出プロパティ) ---
 
     /**
-     * モデルを配列/JSONに変換する際に追加するカスタム属性
-     * @var array
-     */
-    protected $appends = ['external_url'];
-
-    /**
-     * file_name から外部URLを生成するアクセサ
-     * ビューで $video->external_url としてアクセス可能
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     * 外部配信URLを取得
+     * $video->external_url
      */
     protected function externalUrl(): Attribute
     {
@@ -95,6 +95,10 @@ class Video extends Model
         );
     }
 
+    /**
+     * タイトルと名前を結合したフルタイトルを取得
+     * $video->full_title
+     */
     protected function fullTitle(): Attribute
     {
         return Attribute::make(

@@ -136,7 +136,7 @@ class VideoController extends Controller
         $videos = $query->orderBy('created_at', 'asc')
                         ->paginate(9);
 
-        $uniqueTitles = Video::uniqueTitles()->pluck('title')->toArray();
+        $uniqueTitles = Video::getUniqueTitles();
         $uniqueNames = Video::getUniqueNamesByTitle($selectedTitle);
 
         return view('videos.indexV2', compact('videos', 'selectedTitle', 'uniqueTitles', 'selectedName', 'uniqueNames'));
