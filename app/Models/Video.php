@@ -23,11 +23,6 @@ class Video extends Model
         'updated_at' => 'datetime',
     ];
 
-    /**
-     * モデルを配列/JSONに変換する際に追加するカスタム属性
-     * @var array
-     */
-    protected $appends = ['external_url'];
 
     public function scopeSearchByTitle($query, $title)
     {
@@ -54,6 +49,12 @@ class Video extends Model
     {
         return $query->max('created_at');
     }
+
+    /**
+     * モデルを配列/JSONに変換する際に追加するカスタム属性
+     * @var array
+     */
+    protected $appends = ['external_url'];
 
     /**
      * file_name から外部URLを生成するアクセサ
