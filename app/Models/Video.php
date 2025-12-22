@@ -23,10 +23,16 @@ class Video extends Model
         'updated_at' => 'datetime',
     ];
 
-
-    public function scopeSearchByTitle($query, $title)
+    public function scopeSearch($query, array $params)
     {
-        return $query->when($title, fn ($q) => $q->where('title', 'LIKE', "%{$title}%"));
+        return $query
+            ->when($params['title'] ?? null, fn($q, $title) => $q->where('title', 'LIKE', "%{$title}%"))
+            ->when($params['name'] ?? null, fn($q, $name) => $q->where('name', $name));
+    }
+
+    public function scopeHasName($query)
+    {
+        return $query->whereNotNull('name')->where('name', '!=', '');
     }
 
     /**

@@ -135,21 +135,15 @@ class VideoController extends Controller
         $selectedName = $request->input('name');
 
         // ② Eloquentを使用してデータ取得
-        $query = Video::searchByTitle($selectedTitle);
-
-        if ($selectedTitle && $selectedName) {
-            $query->where('name', $selectedName);
-        }
-
+        $query = Video::search($request->all());
         $videos = $query->orderBy('created_at', 'asc')
                         ->paginate(9);
 
         $uniqueNames = [];
         if ($selectedTitle) {
             // 現在のタイトルに属する、名前が設定されているデータのみ抽出
-            $uniqueNames = Video::searchByTitle($selectedTitle)
-                                ->whereNotNull('name')
-                                ->where('name', '!=', '')
+            $uniqueNames = Video::search(['title' => $selectedTitle])
+                                ->hasName()
                                 ->distinct()
                                 ->pluck('name')
                                 ->toArray();
