@@ -129,11 +129,9 @@ class VideoController extends Controller
     public function indexV2(Request $request)
     {
 
-        // ① リクエストから検索キーワードを取得
         $selectedTitle = $request->input('title');
         $selectedName = $request->input('name');
 
-        // ② Eloquentを使用してデータ取得
         $query = Video::search($request->only(['title', 'name']));
         $videos = $query->orderBy('created_at', 'asc')
                         ->paginate(9);
@@ -149,18 +147,6 @@ class VideoController extends Controller
                                 ->toArray();
         }
 
-        Log::info('--- 動画一覧データ (indexV2) ---');
-        // $videosはLengthAwarePaginatorオブジェクトなので、getCollection()で内部のデータを取得し、
-        // toArray()で配列に変換するとログが見やすくなります。
-        Log::info('動画データ:', $videos->getCollection()->toArray());
-        Log::info('ページネーション情報:', [
-            'total' => $videos->total(),
-            'currentPage' => $videos->currentPage(),
-            'perPage' => $videos->perPage(),
-        ]);
-        Log::info('---------------------------------');
-
-        // ③ ビューにデータを渡して表示
         return view('videos.indexV2', compact('videos', 'selectedTitle', 'uniqueTitles', 'selectedName', 'uniqueNames'));
     }
 
