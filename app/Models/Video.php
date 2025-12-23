@@ -85,13 +85,11 @@ class Video extends Model
      */
     protected function externalUrl(): Attribute
     {
-        // ベースURLを定義。ベストプラクティスとしてconfig()から取得することを推奨
-        // 今回はハードコード（直書き）しますが、プロジェクトの設定に合わせて変更してください
-        $baseUrl = config('services.video_host', 'http://192.168.10.11/');
-
         return Attribute::make(
-            // get: アクセスされたときに実行されるロジック
-            get: fn (mixed $value, array $attributes) => $baseUrl . $attributes['file_name'],
+            get: function (mixed $value, array $attributes) {
+                $baseUrl = config('services.video_host', 'http://192.168.10.11/');
+                return Str::finish($baseUrl, '/') . $attributes['file_name'];
+            }
         );
     }
 
