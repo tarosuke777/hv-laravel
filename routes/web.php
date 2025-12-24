@@ -17,5 +17,7 @@ Route::prefix('hv')->group(function () {
     Route::get('/api/videos/store', [VideoController::class, 'store'])
         ->withoutMiddleware(ValidateCsrfToken::class);
     Route::get('/api/videos/max-timestamp', [VideoController::class, 'fetchMaxTimestamp']);
+
+    Route::resource('books', BookController::class);
 });
 

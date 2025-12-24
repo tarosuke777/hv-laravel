@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             VideoSeeder::class,
+            BookSeeder::class,
         ]);
 
         User::factory()->create([
