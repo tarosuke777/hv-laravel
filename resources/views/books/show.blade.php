@@ -1,41 +1,30 @@
-@extends('layouts.app') {{-- または専用の真っ黒なレイアウト --}}
-
-@section('content')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-<div class="h-screen bg-black flex flex-col">
-    {{-- ヘッダー：タイトルと閉じるボタン --}}
-    <div class="p-4 bg-gray-900 text-white flex justify-between items-center">
-        <h1 class="font-bold truncate">{{ $book->title }}</h1>
-        <button onclick="window.close()" class="text-sm bg-gray-700 px-3 py-1 rounded">閉じる</button>
-    </div>
+{{-- Swiper 本体 --}}
+<div class="swiper">
+    <div class="swiper-wrapper">
+        @foreach($pages as $page)
+            <div class="swiper-slide">
+                <img src="{{ $page->external_url }}" loading="lazy">
+            </div>
+        @endforeach
 
-    {{-- Swiper 本体 --}}
-    <div class="swiper mySwiper flex-1 w-full">
-        <div class="swiper-wrapper">
-            @foreach($pages as $page)
-                <div class="swiper-slide flex items-center justify-center">
-                    <img src="{{ $page->external_url }}" 
-                         class="max-h-full max-w-full object-contain"
-                         loading="lazy">
-                </div>
-            @endforeach
-        </div>
-        {{-- ナビゲーションボタン --}}
-        <div class="swiper-button-next text-white"></div>
-        <div class="swiper-button-prev text-white"></div>
-        {{-- ページ番号表示 --}}
-        <div class="swiper-pagination text-white !bottom-4"></div>
+        {{-- ページ数が奇数の場合、空のスライドを追加して調整する --}}
+        @if(count($pages) % 2 !== 0)
+            <div class="swiper-slide empty-slide" style="background: #000;"></div>
+        @endif
     </div>
+    <!-- 必要に応じてナビゲーションやページネーションを追加 -->
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
-    const swiper = new Swiper(".mySwiper", {
+    const swiper = new Swiper(".swiper", {
         loop: false,
-        zoom: true, // ピンチズーム有効化
         breakpoints: {
-            // 画面幅が1024px以上のとき（PCなど）は見開き
+            spaceBetween: 0, // スライド間の余白を0にする
             1024: {
                 slidesPerView: 2,
                 slidesPerGroup: 2,
@@ -46,7 +35,6 @@
                 slidesPerGroup: 1,
             }
         },
-        centeredSlides: false,  // 左（右）詰めに設定
         pagination: {
             el: ".swiper-pagination",
             type: "fraction", // "1 / 10" 形式
@@ -55,7 +43,6 @@
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
         },
-        // rtl: {{ $book->reading_direction === 'rtl' ? 'true' : 'false' }},
         keyboard: {
             enabled: true,
         }
@@ -63,7 +50,42 @@
 </script>
 
 <style>
-    body { margin: 0; padding: 0; overflow: hidden; }
-    .swiper-slide { background: #000; }
+    .swiper {
+        width: 100%;
+        height: 100%;
+    }
+    body { 
+        margin: 0; 
+        padding: 0; 
+        overflow: hidden; 
+        background: #000;
+    }
+    .swiper-slide {
+        display: flex;
+        background: #000;
+    }
+
+    .swiper-slide img {
+        /* ここがポイント：縦横どちらかが先に限界に達するようにする */
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    /* 奇数番目のスライド（左側）：中身を右に寄せる */
+    .swiper-slide:nth-child(odd) {
+        justify-content: flex-end;
+    }
+
+    /* 偶数番目のスライド（右側）：中身を左に寄せる */
+    .swiper-slide:nth-child(even) {
+        justify-content: flex-start;
+    }
+
+    /* スマホなどで1枚表示（slidesPerView: 1）になる時のためのリセット */
+    @media (max-width: 1023px) {
+        .swiper-slide {
+            justify-content: center !important;
+        }
+    }
 </style>
-@endsection
