@@ -1,24 +1,28 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+@extends('layouts.viewer')
 
-{{-- Swiper 本体 --}}
-<div class="swiper">
-    <div class="swiper-wrapper">
-        @foreach($pages as $page)
-            <div class="swiper-slide">
-                <img src="{{ $page->external_url }}" loading="lazy">
-            </div>
-        @endforeach
+@section('content')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-        {{-- ページ数が奇数の場合、空のスライドを追加して調整する --}}
-        @if(count($pages) % 2 !== 0)
-            <div class="swiper-slide empty-slide" style="background: #000;"></div>
-        @endif
+    {{-- Swiper 本体 --}}
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            @foreach($pages as $page)
+                <div class="swiper-slide">
+                    <img src="{{ $page->external_url }}" loading="lazy">
+                </div>
+            @endforeach
+
+            {{-- ページ数が奇数の場合、空のスライドを追加して調整する --}}
+            @if(count($pages) % 2 !== 0)
+                <div class="swiper-slide empty-slide" style="background: #000;"></div>
+            @endif
+        </div>
+        <!-- 必要に応じてナビゲーションやページネーションを追加 -->
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
     </div>
-    <!-- 必要に応じてナビゲーションやページネーションを追加 -->
-    <div class="swiper-pagination"></div>
-    <div class="swiper-button-prev"></div>
-    <div class="swiper-button-next"></div>
-</div>
+
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
     const swiper = new Swiper(".swiper", {
@@ -54,12 +58,6 @@
         width: 100%;
         height: 100%;
     }
-    body { 
-        margin: 0; 
-        padding: 0; 
-        overflow: hidden; 
-        background: #000;
-    }
     .swiper-slide {
         display: flex;
         background: #000;
@@ -76,7 +74,7 @@
     .swiper-slide:nth-child(odd) {
         justify-content: flex-end;
     }
-
+    
     /* 偶数番目のスライド（右側）：中身を左に寄せる */
     .swiper-slide:nth-child(even) {
         justify-content: flex-start;
@@ -89,3 +87,4 @@
         }
     }
 </style>
+@endsection
