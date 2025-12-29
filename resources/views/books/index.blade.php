@@ -72,7 +72,7 @@
                         <p class="text-sm text-gray-500 mb-4">{{ $book->author ?? '不明' }}</p>
 
                         {{-- 閲覧ボタン --}}
-                        <a href="{{ route('books.show', $book->id) }}" 
+                        <a href="{{ route('books.show', ['book' => $book->id, 'external' => 'true']) }}" 
                            target="_blank" 
                            class="mt-auto w-full bg-blue-600 text-white text-center py-2 rounded-lg font-bold hover:bg-blue-700 transition">
                             読む (別タブ)
