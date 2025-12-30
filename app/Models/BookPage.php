@@ -8,6 +8,11 @@ use Illuminate\Support\Str;
 
 class BookPage extends Model
 {
+    protected $fillable = [
+        'page_number',
+        'file_path',
+    ];
+
     public function book()
     {
         // 「BookPageはひとつのBookに属している」という定義
