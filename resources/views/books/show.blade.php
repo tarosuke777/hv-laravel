@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     {{-- Swiper 本体 --}}
-    <div class="swiper">
+    <div class="swiper" dir="rtl">
         <div class="swiper-wrapper">
             @foreach($pages as $page)
                 <div class="swiper-slide">
@@ -26,6 +26,7 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
     const swiper = new Swiper(".swiper", {
+        rtl: true,
         loop: false,
         breakpoints: {
             spaceBetween: 0, // スライド間の余白を0にする
@@ -56,11 +57,12 @@
 <style>
     .swiper {
         width: 100%;
-        height: 100%;
+        height: 100vh;
     }
     .swiper-slide {
         display: flex;
         background: #000;
+        align-items: center;
     }
 
     .swiper-slide img {
