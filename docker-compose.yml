@@ -18,6 +18,8 @@ services:
             VIDEO_BASE_URL: http://192.168.10.11/
             APP_URL: http://192.168.10.10/hv
             ASSET_URL: http://192.168.10.10/hv
+            LOG_CHANNEL: stderr
+            LOG_LEVEL: debug
         secrets:
             - secret_key_base
             - mysql_user_password
