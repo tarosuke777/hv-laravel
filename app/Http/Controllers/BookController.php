@@ -63,6 +63,13 @@ class BookController extends Controller
 
         } catch (\Exception $e) {
             // 失敗した場合は自動でロールバックされ、ここに来る
+            Log::error('Bookの登録に失敗しました。', [
+                'message' => $e->getMessage(),
+                'file'    => $e->getFile(),
+                'line'    => $e->getLine(),
+                'trace'   => $e->getTraceAsString(), // スタックトレース
+            ]);
+
             return response()->json(['error' => '登録に失敗しました'], 500);
         }
     }
