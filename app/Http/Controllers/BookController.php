@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Models\Book;
 use App\Http\Requests\StoreBookRequest;
 
@@ -14,6 +15,7 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
+        Log::info('--- 漫画一覧データ (index) ---');
         $selectedTitle = $request->input('title');
 
         $query = Book::with('pages'); // Eager Loadで最初の1枚（表紙）などを取得しやすくする
