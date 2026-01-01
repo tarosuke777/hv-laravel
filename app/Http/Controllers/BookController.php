@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBookRequest;
+use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Models\Book;
-use App\Http\Requests\StoreBookRequest;
 
 class BookController extends Controller
 {
@@ -21,13 +21,13 @@ class BookController extends Controller
         $query = Book::with('pages'); // Eager Loadで最初の1枚（表紙）などを取得しやすくする
 
         if ($request->title) {
-           $query->where('title', $request->title);
+            $query->where('title', $request->title);
         }
 
         $books = $query->paginate(12);
         $uniqueTitles = Book::pluck('title')->unique();
 
-        return view('books.index', compact('books', 'selectedTitle','uniqueTitles'));
+        return view('books.index', compact('books', 'selectedTitle', 'uniqueTitles'));
     }
 
     /**
@@ -65,9 +65,9 @@ class BookController extends Controller
             // 失敗した場合は自動でロールバックされ、ここに来る
             Log::error('Bookの登録に失敗しました。', [
                 'message' => $e->getMessage(),
-                'file'    => $e->getFile(),
-                'line'    => $e->getLine(),
-                'trace'   => $e->getTraceAsString(), // スタックトレース
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(), // スタックトレース
             ]);
 
             return response()->json(['error' => '登録に失敗しました'], 500);
@@ -81,6 +81,7 @@ class BookController extends Controller
     {
         $book = Book::findOrFail($id);
         $pages = $book->pages()->orderBy('page_number')->get();
+
         return view('books.show', compact('book', 'pages'));
     }
 

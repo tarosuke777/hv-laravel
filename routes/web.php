@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\VideoController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\VideoController;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,4 +25,3 @@ Route::prefix('hv')->group(function () {
     Route::get('/api/books/store', [BookController::class, 'store'])
         ->withoutMiddleware(ValidateCsrfToken::class);
 });
-

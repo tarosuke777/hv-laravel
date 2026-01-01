@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Book;
 use App\Models\BookPage;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class BookSeeder extends Seeder
@@ -25,7 +24,7 @@ class BookSeeder extends Seeder
                 'book_id' => $book->id,
                 'page_number' => $i,
                 // 実際には存在しないパスでも、DBのテストには十分です
-                'file_path' => "books/{$book->id}/p" . sprintf('%03d', $i) . ".jpg",
+                'file_path' => "books/{$book->id}/p".sprintf('%03d', $i).'.jpg',
             ]);
         }
     }

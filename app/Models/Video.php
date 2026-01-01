@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Str;
 
 class Video extends Model
@@ -15,8 +15,8 @@ class Video extends Model
         'title',
         'name',
         'file_name',
-        'created_at', 
-        'updated_at'
+        'created_at',
+        'updated_at',
     ];
 
     protected $casts = [
@@ -34,8 +34,8 @@ class Video extends Model
     public function scopeSearch($query, array $params)
     {
         return $query
-            ->when($params['title'] ?? null, fn($q, $title) => $q->where('title',$title))
-            ->when($params['name'] ?? null, fn($q, $name) => $q->where('name', $name));
+            ->when($params['title'] ?? null, fn ($q, $title) => $q->where('title', $title))
+            ->when($params['name'] ?? null, fn ($q, $name) => $q->where('name', $name));
     }
 
     /**
@@ -55,7 +55,7 @@ class Video extends Model
     }
 
     // --- Static Methods (最終的なデータ取得) ---
-    
+
     /**
      * 重複のないタイトル一覧を取得
      */
@@ -69,13 +69,15 @@ class Video extends Model
      */
     public static function getUniqueNamesByTitle(?string $title): array
     {
-        if (empty($title)) return [];
+        if (empty($title)) {
+            return [];
+        }
 
         return self::search(['title' => $title])
-                    ->hasName()
-                    ->distinct()
-                    ->pluck('name')
-                    ->toArray();
+            ->hasName()
+            ->distinct()
+            ->pluck('name')
+            ->toArray();
     }
 
     // --- Attributes (アクセサ / 算出プロパティ) ---
@@ -89,7 +91,8 @@ class Video extends Model
         return Attribute::make(
             get: function (mixed $value, array $attributes) {
                 $baseUrl = config('services.video_host', 'http://192.168.10.11/');
-                return Str::finish($baseUrl, '/') . $attributes['file_name'];
+
+                return Str::finish($baseUrl, '/').$attributes['file_name'];
             }
         );
     }
@@ -101,9 +104,8 @@ class Video extends Model
     protected function fullTitle(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => 
-                $attributes['name'] 
-                    ? "{$attributes['title']} - {$attributes['name']}" 
+            get: fn (mixed $value, array $attributes) => $attributes['name']
+                    ? "{$attributes['title']} - {$attributes['name']}"
                     : $attributes['title']
         );
     }

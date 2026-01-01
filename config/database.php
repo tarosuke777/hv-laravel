@@ -51,8 +51,8 @@ return [
             'database' => env('DB_DATABASE', 'laravel'),
             'username' => env('DB_USERNAME', 'root'),
             // 'password' => env('DB_PASSWORD', ''),
-            'password' => env('DB_PASSWORD_FILE') 
-                ? trim(file_get_contents(env('DB_PASSWORD_FILE'))) 
+            'password' => env('DB_PASSWORD_FILE')
+                ? trim(file_get_contents(env('DB_PASSWORD_FILE')))
                 : env('DB_PASSWORD'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => env('DB_CHARSET', 'utf8mb4'),

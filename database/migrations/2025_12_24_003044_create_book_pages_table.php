@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('page_number');
             $table->string('file_path');
             $table->timestamps();
-            
+
             $table->unique(['book_id', 'page_number']);
         });
     }

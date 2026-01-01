@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB; // DBファサードを使用
-use Carbon\Carbon; // タイムスタンプの操作にCarbonを使用
+use Carbon\Carbon;
+use Illuminate\Database\Seeder; // DBファサードを使用
+use Illuminate\Support\Facades\DB; // タイムスタンプの操作にCarbonを使用
 
 class VideoSeeder extends Seeder
 {

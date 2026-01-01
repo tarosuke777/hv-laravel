@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class BookPage extends Model
@@ -31,16 +31,16 @@ class BookPage extends Model
             get: function (mixed $value, array $attributes) {
                 // ベースURLを取得
                 $baseUrl = config('services.video_host', 'http://192.168.10.11/');
-                
+
                 // 親(Book)がロードされていればそのタイトルを、なければ'unknown'などを使用
                 // ※ $this を使うことでロード済みのリレーションを参照できます
                 $title = $this->book ? $this->book->title : 'unknown';
-                
+
                 // ファイル名を取得
                 $fileName = basename($attributes['file_path']);
 
                 // URLを組み立て
-                return Str::finish($baseUrl, '/books/') . rawurlencode($title) . '/' . rawurlencode($fileName);
+                return Str::finish($baseUrl, '/books/').rawurlencode($title).'/'.rawurlencode($fileName);
             }
         );
     }

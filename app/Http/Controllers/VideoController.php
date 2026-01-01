@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Pagination\Paginator; 
-use Illuminate\Support\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Validator;
-
 use App\Models\Video;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class VideoController extends Controller
 {
@@ -22,7 +20,7 @@ class VideoController extends Controller
         Log::info('Storage All Files List', [
             'count' => count($allFiles),
             // 全リストをログに出力（リストが非常に長い場合は注意）
-            'files' => $allFiles 
+            'files' => $allFiles,
         ]);
 
         $mp4Files = array_filter($allFiles, function ($file) {
@@ -35,7 +33,7 @@ class VideoController extends Controller
                 'fileName' => $fileName,
                 'fullPath' => $file,
                 'extension' => $extension,
-                'isMp4' => $isMp4 ? 'PASS' : 'FAIL'
+                'isMp4' => $isMp4 ? 'PASS' : 'FAIL',
             ]);
 
             return $isMp4;
@@ -46,13 +44,13 @@ class VideoController extends Controller
 
             // タイムスタンプ部分を削除してタイトルを抽出
             $title = preg_replace('/\s\d{4}-\d{2}-\d{2}\s\d{2}-\d{2}-\d{2}$/', '', $fileName);
-            
+
             // ★★★ ログ埋め込み箇所 1: タイトル抽出の確認 ★★★
             Log::info('Title Extraction Check', [
                 'filePath' => $filePath,
-                'extractedTitle' => $title
+                'extractedTitle' => $title,
             ]);
-            
+
             return $title;
         };
 
@@ -74,14 +72,13 @@ class VideoController extends Controller
                     'file' => basename($filePath),
                     'fileTitle' => $fileTitle,
                     'selectedTitle' => $selectedTitle,
-                    'isMatch' => $isMatch ? 'PASS' : 'FAIL'
+                    'isMatch' => $isMatch ? 'PASS' : 'FAIL',
                 ]);
 
                 // ファイルのタイトルが選択されたタイトルと一致するか比較
                 return $isMatch;
             });
         }
-
 
         $perPage = 6;
         $page = $request->get('page', 1);
@@ -104,7 +101,7 @@ class VideoController extends Controller
 
             Log::info('Generated Video URL', [
                 'file_path' => $filePath, // 実ファイルの相対パス
-                'public_url' => $url       // Webアクセス可能なURL
+                'public_url' => $url,       // Webアクセス可能なURL
             ]);
 
             return [
@@ -114,8 +111,8 @@ class VideoController extends Controller
         }, $videoPaginator->items());
 
         return view('videos.index', [
-            'videoList' => $videoList, 
-            'directory' => $directory, 
+            'videoList' => $videoList,
+            'directory' => $directory,
             'videos' => $videoPaginator,
             'uniqueTitles' => $uniqueTitles,
             'selectedTitle' => $selectedTitle,
@@ -134,7 +131,7 @@ class VideoController extends Controller
 
         $query = Video::search($request->only(['title', 'name']));
         $videos = $query->orderBy('created_at', 'asc')
-                        ->paginate(9);
+            ->paginate(9);
 
         $uniqueTitles = Video::getUniqueTitles();
         $uniqueNames = Video::getUniqueNamesByTitle($selectedTitle);
@@ -161,12 +158,13 @@ class VideoController extends Controller
 
         return response()->json([
             'message' => 'Video registered with custom timestamps',
-            'data' => $video
+            'data' => $video,
         ], 201);
     }
 
     /**
      * Videoモデル全体の最新作成日時をJSONで取得する
+     *
      * * @return \Illuminate\Http\JsonResponse
      */
     public function fetchMaxTimestamp()
@@ -197,7 +195,7 @@ class VideoController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => '保存しました！',
-                'new_name' => $video->name
+                'new_name' => $video->name,
             ]);
         } catch (\Exception $e) {
             return response()->json(['success' => false], 500);
