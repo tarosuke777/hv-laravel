@@ -25,3 +25,5 @@ composer run dev
     Auto generate tests with Codegen.
 
   npx playwright show-report
+
+  npx playwright test --update-snapshots
