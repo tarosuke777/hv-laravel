@@ -48,7 +48,12 @@ RUN apk update && apk add --no-cache \
     libpq \
     # gd のランタイム依存関係
     libpng \
-    libjpeg-turbo 
+    libjpeg-turbo \
+    tzdata
+
+# タイムゾーンの設定を OS に反映
+RUN cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
+    echo "Asia/Tokyo" > /etc/timezone
 
 RUN docker-php-ext-install pdo pdo_mysql mysqli
 
