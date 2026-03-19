@@ -8,6 +8,7 @@ services:
             dockerfile: Dockerfile
         image: laravel-app:latest
         environment:
+            TZ: Asia/Tokyo
             DB_CONNECTION: mysql
             DB_HOST: home-db-mysql
             DB_PORT: 3306
