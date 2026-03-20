@@ -21,6 +21,8 @@
         <div class="swiper-pagination"></div>
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
+
+        <div class="swiper-scrollbar"></div>
     </div>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -50,6 +52,11 @@
         },
         keyboard: {
             enabled: true,
+        },
+        scrollbar: {
+            el: ".swiper-scrollbar",
+            draggable: true, // ドラッグで操作可能にする
+            hide: true,      // 操作していない時も常に表示するならfalse
         }
     });
 </script>
@@ -87,6 +94,17 @@
         .swiper-slide {
             justify-content: center !important;
         }
+    }
+
+    /* スクロールバーのカスタマイズ例 */
+    .swiper-scrollbar {
+        background: rgba(255, 255, 255, 0.2); /* バーの背景 */
+        height: 5px !important;               /* 太さ */
+        bottom: 10px !important;              /* 下からの位置 */
+    }
+
+    .swiper-scrollbar-drag {
+        background: #fff; /* 動くツマミの色 */
     }
 </style>
 @endsection
