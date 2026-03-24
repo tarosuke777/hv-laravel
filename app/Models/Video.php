@@ -92,7 +92,7 @@ class Video extends Model
             get: function (mixed $value, array $attributes) {
                 $baseUrl = config('services.video_host', 'http://192.168.10.11/');
 
-                return Str::finish($baseUrl, '/').$attributes['file_name'];
+                return Str::finish($baseUrl, '/videos/').$attributes['file_name'];
             }
         );
     }
