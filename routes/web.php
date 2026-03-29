@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\VideoController;
+use App\Http\Controllers\ImageController;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Facades\Route;
 
@@ -23,4 +24,9 @@ Route::prefix('hv')->group(function () {
         ->withoutMiddleware(ValidateCsrfToken::class);
     Route::get('/api/books/store', [BookController::class, 'store'])
         ->withoutMiddleware(ValidateCsrfToken::class);
+
+    Route::get('/images', [ImageController::class, 'index'])->name('images.index');
+    Route::patch('/images/{id}/update-name', [ImageController::class, 'updateName'])->name('images.updateName');
+
+
 });

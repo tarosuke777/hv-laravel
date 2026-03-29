@@ -1,0 +1,96 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Image;
+use Illuminate\Http\Request;
+
+class ImageController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $selectedTitle = $request->input('title');
+        $selectedName = $request->input('name');
+
+        $query = Image::search($request->only(['title', 'name']));
+        $images = $query->orderBy('created_at', 'asc')
+            ->paginate(9);
+
+        $uniqueTitles = Image::getUniqueTitles();
+        $uniqueNames = Image::getUniqueNamesByTitle($selectedTitle);
+
+        return view('images.index', compact('images', 'selectedTitle', 'uniqueTitles', 'selectedName', 'uniqueNames'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreImageRequest $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Image $image)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Image $image)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateImageRequest $request, Image $image)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Image $image)
+    {
+        //
+    }
+
+     public function updateName(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        try {
+            $image = Image::findOrFail($id);
+            $image->name = $request->name;
+            $image->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => '保存しました！',
+                'new_name' => $image->name,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false], 500);
+        }
+    }
+}
