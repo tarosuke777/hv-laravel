@@ -27,6 +27,10 @@ Route::prefix('hv')->group(function () {
 
     Route::get('/images', [ImageController::class, 'index'])->name('images.index');
     Route::patch('/images/{id}/update-name', [ImageController::class, 'updateName'])->name('images.updateName');
+    Route::post('/api/images/store', [ImageController::class, 'store'])
+        ->withoutMiddleware(ValidateCsrfToken::class);
+    Route::get('/api/images/store', [ImageController::class, 'store'])
+        ->withoutMiddleware(ValidateCsrfToken::class);
 
 
 });

@@ -38,7 +38,23 @@ class ImageController extends Controller
      */
     public function store(StoreImageRequest $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'file_name' => 'required|string|unique:videos,file_name',
+            'created_at' => 'required|date',
+            'updated_at' => 'required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        // $request->all() に created_at が含まれていれば、それが優先して保存されます
+        $video = Video::create($request->all());
+
+        return response()->json([
+            'message' => 'Video registered with custom timestamps',
+            'data' => $video,
+        ], 201);
     }
 
     /**
