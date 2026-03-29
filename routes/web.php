@@ -31,6 +31,7 @@ Route::prefix('hv')->group(function () {
         ->withoutMiddleware(ValidateCsrfToken::class);
     Route::get('/api/images/store', [ImageController::class, 'store'])
         ->withoutMiddleware(ValidateCsrfToken::class);
+    Route::get('/api/images/max-timestamp', [ImageController::class, 'fetchMaxTimestamp']);
 
 
 });

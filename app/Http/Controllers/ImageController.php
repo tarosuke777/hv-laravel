@@ -89,7 +89,25 @@ class ImageController extends Controller
         //
     }
 
-     public function updateName(Request $request, $id)
+
+    /**
+     * Videoモデル全体の最新作成日時をJSONで取得する
+     *
+     * * @return \Illuminate\Http\JsonResponse
+     */
+    public function fetchMaxTimestamp()
+    {
+        // scopeGetMaxCreatedを使用して最大値を取得
+        // スコープを呼び出す際は「scope」を除いたキャメルケースで記述します
+        $maxDate = Image::getMaxCreated();
+
+        return response()->json([
+            'status' => 'success',
+            'max_created_at' => $maxDate,
+        ]);
+    }
+
+    public function updateName(Request $request, $id)
     {
         $request->validate([
             'name' => 'required|string|max:255',
