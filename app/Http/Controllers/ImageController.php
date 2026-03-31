@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Image;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ImageController extends Controller
 {
@@ -49,11 +50,11 @@ class ImageController extends Controller
         }
 
         // $request->all() に created_at が含まれていれば、それが優先して保存されます
-        $video = Video::create($request->all());
+        $image = Image::create($request->all());
 
         return response()->json([
-            'message' => 'Video registered with custom timestamps',
-            'data' => $video,
+            'message' => 'Image registered with custom timestamps',
+            'data' => $image,
         ], 201);
     }
 
