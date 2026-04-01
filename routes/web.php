@@ -7,10 +7,15 @@ use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('videos.index');
 });
 
 Route::prefix('hv')->group(function () {
+
+    Route::get('/', function () {
+        return redirect()->route('videos.index');
+    });
+
     Route::get('/videos', [VideoController::class, 'index'])->name('videos.index');
     Route::patch('/videos/{id}/update-name', [VideoController::class, 'updateName'])->name('videos.updateName');
     Route::post('/api/videos/store', [VideoController::class, 'store'])
