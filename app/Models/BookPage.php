@@ -30,7 +30,7 @@ class BookPage extends Model
         return Attribute::make(
             get: function (mixed $value, array $attributes) {
                 // ベースURLを取得
-                $baseUrl = config('services.video_host', 'http://192.168.10.11/');
+                $baseUrl = config('services.video_host', 'http://192.168.10.11:8080/');
 
                 // 親(Book)がロードされていればそのタイトルを、なければ'unknown'などを使用
                 // ※ $this を使うことでロード済みのリレーションを参照できます

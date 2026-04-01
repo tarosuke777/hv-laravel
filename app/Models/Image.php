@@ -90,7 +90,7 @@ class Image extends Model
     {
         return Attribute::make(
             get: function (mixed $value, array $attributes) {
-                $baseUrl = config('services.video_host', 'http://192.168.10.11/');
+                $baseUrl = config('services.video_host', 'http://192.168.10.11:8080/');
 
                 return Str::finish($baseUrl, 'images/').$attributes['file_name'];
             }
