@@ -17,7 +17,7 @@ services:
             DB_USERNAME: hv
             DB_PASSWORD_FILE: /run/secrets/mysql_user_password
             APP_KEY_FILE: /run/secrets/secret_key_base
-            VIDEO_BASE_URL: http://192.168.10.11/
+            VIDEO_BASE_URL: http://192.168.10.11:8080/
             APP_URL: http://192.168.10.10/hv
             ASSET_URL: http://192.168.10.10/hv
         secrets:
