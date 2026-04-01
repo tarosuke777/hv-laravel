@@ -16,14 +16,20 @@
     <header class="bg-white shadow-md" x-data="{ open: false }">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
             <div class="flex justify-between items-center h-12">
-                <a href="/" class="text-xl font-bold text-gray-800">{{ config('app.name', 'HV') }}</a>
+                <div class="flex items-center space-x-4"> {{-- 横並びにするためにdivで囲むと綺麗です --}}
+                    <a href="/" class="text-xl font-bold text-gray-800">{{ config('app.name', 'HV') }}</a>
+
+                    <span class="text-gray-500 text-sm font-medium border-l pl-4">
+                        @yield('title')
+                    </span>
+                </div>        
 
                 @php
                     // メニュー項目を「ルート名」で定義
                     $navItems = [
                         ['name' => '動画一覧', 'route' => 'videos.index'],
                         ['name' => '画像一覧', 'route' => 'images.index'],
-                        ['name' => '書籍一覧', 'route' => 'books.index'],
+                        ['name' => '漫画一覧', 'route' => 'books.index'],
                     ];
                 @endphp
 

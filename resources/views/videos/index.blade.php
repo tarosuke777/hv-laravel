@@ -7,10 +7,7 @@
 @section('title', 'MP4 動画一覧')
 
 {{-- ★ 3. メインコンテンツを定義する (app.blade.phpの@yield('content')に挿入される) ★ --}}
-@section('content')
-
-    <h1 class="text-3xl font-bold text-gray-900 mb-6">🎬 MP4 ファイル一覧</h1>
-    
+@section('content')    
     <div x-data="{ open: false }" class="mb-8 border p-4 bg-gray-50 rounded-lg">
         <div class="flex items-center justify-between cursor-pointer" @click="open = !open">
             <h2 class="text-xl font-semibold">

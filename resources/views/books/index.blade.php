@@ -3,8 +3,6 @@
 @section('title', '漫画一覧')
 
 @section('content')
-    <h1 class="text-3xl font-bold text-gray-900 mb-6">📚 漫画ライブラリ</h1>
-
     <div x-data="{ open: false }" class="mb-8 border p-4 bg-gray-50 rounded-lg">
         <div class="flex items-center justify-between cursor-pointer" @click="open = !open">
             <h2 class="text-xl font-semibold">
