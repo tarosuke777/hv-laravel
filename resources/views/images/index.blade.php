@@ -88,7 +88,7 @@
                     <strong class="text-lg font-semibold mb-3">{{ $image->full_title }}</strong>
                     
                     <div class="relative aspect-video bg-gray-100 rounded-lg overflow-hidden mb-5 shadow-inner flex items-center justify-center">
-                        <a href="{{ $image->external_url }}" target="_blank" class="block w-full h-full">    
+                        <a href="{{ $image->external_url }}?external=true" target="_blank" class="block w-full h-full">    
                             <img src="{{ $image->external_url }}" 
                                         alt="{{ $image->full_title }}" 
                                         class="w-full h-full object-contain transition-transform duration-300 hover:scale-105">
