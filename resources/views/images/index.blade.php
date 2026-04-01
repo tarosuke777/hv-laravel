@@ -88,9 +88,11 @@
                     <strong class="text-lg font-semibold mb-3">{{ $image->full_title }}</strong>
                     
                     <div class="relative aspect-video bg-gray-100 rounded-lg overflow-hidden mb-5 shadow-inner flex items-center justify-center">
-                        <img src="{{ $image->external_url }}" 
-                             alt="{{ $image->full_title }}" 
-                             class="max-w-full max-h-full object-contain transition-transform duration-300 hover:scale-105">
+                        <a href="{{ $image->external_url }}" target="_blank" class="block w-full h-full">    
+                            <img src="{{ $image->external_url }}" 
+                                        alt="{{ $image->full_title }}" 
+                                        class="w-full h-full object-contain transition-transform duration-300 hover:scale-105">
+                        </a>
                     </div>
 
                     <div x-data="{ 
@@ -153,11 +155,6 @@
                             </div>
                         </div>
                     </div>
-
-                    {{-- 再生リンク --}}
-                    <a href="{{ $image->external_url }}" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium transition duration-150">
-                        別タブで再生
-                    </a>
                 </li>
             @endforeach
         </ul>
