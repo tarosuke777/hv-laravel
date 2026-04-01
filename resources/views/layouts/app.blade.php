@@ -19,17 +19,17 @@
                 <a href="/" class="text-xl font-bold text-gray-800">{{ config('app.name', 'HV') }}</a>
 
                 @php
-                    // メニュー項目を配列で定義
+                    // メニュー項目を「ルート名」で定義
                     $navItems = [
-                        ['name' => '動画一覧', 'url' => '/videos'],
-                        ['name' => '画像一覧', 'url' => '/images'],
-                        ['name' => '書籍一覧', 'url' => '/books'],
+                        ['name' => '動画一覧', 'route' => 'videos.index'],
+                        ['name' => '画像一覧', 'route' => 'images.index'],
+                        ['name' => '書籍一覧', 'route' => 'books.index'],
                     ];
                 @endphp
 
                 <div class="hidden sm:flex space-x-8">
                     @foreach($navItems as $item)
-                        <a href="{{ $item['url'] }}" class="text-gray-600 hover:text-gray-900">
+                        <a href="{{ route($item['route']) }}" class="text-gray-600 hover:text-gray-900">
                             {{ $item['name'] }}
                         </a>
                     @endforeach
@@ -47,7 +47,7 @@
 
             <div :class="{'block': open, 'hidden': !open}" class="hidden sm:hidden pb-4">
                 @foreach($navItems as $item)
-                    <a href="{{ $item['url'] }}" class="block py-2 text-gray-600 hover:text-gray-900">
+                    <a href="{{ route($item['route']) }}" class="block py-2 text-gray-600 hover:text-gray-900">
                         {{ $item['name'] }}
                     </a>
                 @endforeach
