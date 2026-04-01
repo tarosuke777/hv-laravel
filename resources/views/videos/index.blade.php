@@ -4,7 +4,7 @@
 @extends('layouts.app') 
 
 {{-- ★ 2. ページタイトルを定義する (app.blade.phpの@yield('title')に挿入される) ★ --}}
-@section('title', 'MP4 動画一覧')
+@section('title', '動画一覧')
 
 {{-- ★ 3. メインコンテンツを定義する (app.blade.phpの@yield('content')に挿入される) ★ --}}
 @section('content')    
