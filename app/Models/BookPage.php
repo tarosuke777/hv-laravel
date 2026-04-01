@@ -40,7 +40,7 @@ class BookPage extends Model
                 $fileName = basename($attributes['file_path']);
 
                 // URLを組み立て
-                return Str::finish($baseUrl, '/books/').rawurlencode($title).'/'.rawurlencode($fileName);
+                return Str::finish($baseUrl, 'books/').rawurlencode($title).'/'.rawurlencode($fileName);
             }
         );
     }
