@@ -25,6 +25,10 @@ class VideoController extends Controller
         $videos = $query->orderBy('created_at', 'asc')
             ->paginate(9);
 
+        if ($request->ajax()) {
+            return view('videos._video_items', compact('videos'))->render();
+        }
+
         $uniqueTitles = Video::getUniqueTitles();
         $uniqueNames = Video::getUniqueNamesByTitle($selectedTitle);
 
