@@ -1,6 +1,12 @@
 # 起動コマンド
+nvm use node
 composer run dev
 ※ tailwindを利用するため、viteが必要なため
+
+# 追加コマンド
+php artisan make:model Image -a
+
+php artisan migrate
 
 # フォーマット
 ./vendor/bin/pint
