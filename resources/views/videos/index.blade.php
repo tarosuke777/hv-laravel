@@ -8,27 +8,35 @@
 
 {{-- ★ 3. メインコンテンツを定義する (app.blade.phpの@yield('content')に挿入される) ★ --}}
 @section('content')    
-    <div x-data="{ open: {{ $selectedTitle ? 'false' : 'true' }} }" class="mb-8 border p-4 bg-gray-50 rounded-lg">
+    <div x-data="{ open: false }" class="mb-8 border p-4 bg-gray-50 rounded-lg shadow-sm">
         
-        {{-- ヘッダー部分：クリックでタイトルの再選択エリアを開閉 --}}
-        <div class="flex items-center justify-between cursor-pointer" @click="open = !open">
-            <h2 class="text-xl font-semibold flex items-center">
-                @if ($selectedTitle)
-                    <span class="text-blue-600">選択中: {{ $selectedTitle }}</span>
-                    <span class="text-xs font-normal text-gray-500 ml-3 bg-white px-2 py-1 border rounded shadow-sm">変更する</span>
-                @else
-                    タイトルで絞り込む
-                @endif
-            </h2>
+        {{-- ヘッダー：ここをクリックしない限りタイトル一覧は見えない --}}
+        <div class="flex items-center justify-between cursor-pointer group" @click="open = !open">
+            <div class="flex flex-col">
+                <h2 class="text-sm font-bold text-gray-500 uppercase tracking-wider group-hover:text-blue-600 transition">
+                    ビデオシリーズを選択
+                </h2>
+                <div class="mt-1 flex items-center">
+                    @if ($selectedTitle)
+                        <span class="text-xl font-bold text-blue-700">{{ $selectedTitle }}</span>
+                        <span class="ml-2 text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full">選択中</span>
+                    @else
+                        <span class="text-xl font-bold text-gray-400">すべてのタイトル</span>
+                    @endif
+                </div>
+            </div>
             
-            <svg class="w-5 h-5 transition-transform duration-300" 
-                :class="{ 'rotate-180': open, 'rotate-0': !open }" 
-                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
+            <div class="flex items-center text-gray-400 group-hover:text-blue-600 transition">
+                <span class="text-sm mr-2" x-text="open ? '閉じる' : '変更する'"></span>
+                <svg class="w-6 h-6 transition-transform duration-300" 
+                    :class="{ 'rotate-180': open, 'rotate-0': !open }" 
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </div>
         </div>
 
-        {{-- タイトル一覧：選択後はデフォルトで隠れる --}}
+        {{-- タイトル一覧：初期表示は x-show='false' (openの初期値) なので閉じている --}}
         <div x-show="open" x-collapse class="mt-4 pt-4 border-t border-gray-300">
             <div class="flex flex-wrap gap-2 max-h-60 overflow-y-auto p-1">
                 <a href="{{ route('videos.index') }}" 
@@ -45,19 +53,21 @@
             </div>
         </div>
 
-        {{-- 名前での絞り込み：タイトルが選ばれている時だけ「常に表示」 --}}
+        {{-- 名前での絞り込み：タイトルが選択されていれば、タイトル一覧の開閉に関わらず「常に表示」 --}}
         @if($selectedTitle && count($uniqueNames) > 0)
-            <div class="mt-4 pt-4 border-t border-dashed border-gray-300">
-                <p class="text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">表示名でさらに絞り込む</p>
+            <div class="mt-6 pt-4 border-t border-dashed border-gray-300">
+                <p class="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider">
+                    <span class="bg-indigo-50 text-indigo-600 px-2 py-1 rounded">ステップ 2</span> 表示名でさらに絞り込む
+                </p>
                 <div class="flex flex-wrap gap-2">
                     <a href="{{ route('videos.index', ['title' => $selectedTitle]) }}" 
-                    class="px-3 py-1 text-sm rounded-full transition {{ !$selectedName ? 'bg-indigo-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                    class="px-4 py-1.5 text-sm rounded-full transition {{ !$selectedName ? 'bg-indigo-600 text-white font-bold shadow-md' : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50' }}">
                         全ての「{{ $selectedTitle }}」
                     </a>
 
                     @foreach ($uniqueNames as $name)
                         <a href="{{ route('videos.index', ['title' => $selectedTitle, 'name' => $name]) }}"
-                        class="px-3 py-1 text-sm rounded-full transition {{ $selectedName === $name ? 'bg-indigo-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                        class="px-4 py-1.5 text-sm rounded-full transition {{ $selectedName === $name ? 'bg-indigo-600 text-white font-bold shadow-md' : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50' }}">
                             {{ $name }}
                         </a>
                     @endforeach
