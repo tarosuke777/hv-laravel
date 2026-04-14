@@ -2,7 +2,19 @@
     <li class="bg-white shadow-xl rounded-xl overflow-hidden p-5 flex flex-col items-center">
         <strong class="text-lg font-semibold mb-3">{{ $video->full_title }}</strong>
         
-        <video controls class="w-full h-auto rounded-lg mb-4 video-preview-target" preload="metadata">
+        <video 
+            controls
+            class="w-full h-auto rounded-lg mb-4 video-preview-target"
+            preload="metadata"
+            x-init="
+                $el.addEventListener('loadeddata', () => {
+                    if ($el.readyState >= 2) {
+                        $el.currentTime = 0;
+                        $el.pause();
+                    }
+                })
+            "
+        >
             <source src="{{ $video->external_url }}" type="video/mp4">
             お使いのブラウザは動画タグに対応していません。
         </video>
