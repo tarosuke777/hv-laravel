@@ -13,26 +13,13 @@
         {{-- ヘッダー：ここをクリックしない限りタイトル一覧は見えない --}}
         <div class="flex items-center justify-between cursor-pointer group" @click="open = !open">
             <div class="flex flex-col">
-                <h2 class="text-sm font-bold text-gray-500 uppercase tracking-wider group-hover:text-blue-600 transition">
-                    ビデオシリーズを選択
-                </h2>
                 <div class="mt-1 flex items-center">
                     @if ($selectedTitle)
-                        <span class="text-xl font-bold text-blue-700">{{ $selectedTitle }}</span>
-                        <span class="ml-2 text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full">選択中</span>
+                        <span class="text-base font-bold text-black">{{ $selectedTitle }}</span>
                     @else
-                        <span class="text-xl font-bold text-gray-400">すべてのタイトル</span>
+                        <span class="text-base font-bold text-gray-400">すべてのタイトル</span>
                     @endif
                 </div>
-            </div>
-            
-            <div class="flex items-center text-gray-400 group-hover:text-blue-600 transition">
-                <span class="text-sm mr-2" x-text="open ? '閉じる' : '変更する'"></span>
-                <svg class="w-6 h-6 transition-transform duration-300" 
-                    :class="{ 'rotate-180': open, 'rotate-0': !open }" 
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
             </div>
         </div>
 
@@ -41,7 +28,7 @@
             <div class="flex flex-wrap gap-2 max-h-60 overflow-y-auto p-1">
                 <a href="{{ route('videos.index') }}" 
                 class="px-3 py-1 text-sm rounded-full transition {{ !$selectedTitle ? 'bg-blue-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
-                    全ての動画 ({{ count($uniqueTitles) }})
+                    全て ({{ count($uniqueTitles) }})
                 </a>
 
                 @foreach ($uniqueTitles as $title)
@@ -57,12 +44,12 @@
         @if($selectedTitle && count($uniqueNames) > 0)
             <div class="mt-6 pt-4 border-t border-dashed border-gray-300">
                 <p class="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider">
-                    <span class="bg-indigo-50 text-indigo-600 px-2 py-1 rounded">ステップ 2</span> 表示名でさらに絞り込む
+                    表示名でさらに絞り込む
                 </p>
                 <div class="flex flex-wrap gap-2">
                     <a href="{{ route('videos.index', ['title' => $selectedTitle]) }}" 
                     class="px-4 py-1.5 text-sm rounded-full transition {{ !$selectedName ? 'bg-indigo-600 text-white font-bold shadow-md' : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50' }}">
-                        全ての「{{ $selectedTitle }}」
+                        全て
                     </a>
 
                     @foreach ($uniqueNames as $name)
