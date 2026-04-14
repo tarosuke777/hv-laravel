@@ -8,67 +8,62 @@
 
 {{-- ★ 3. メインコンテンツを定義する (app.blade.phpの@yield('content')に挿入される) ★ --}}
 @section('content')    
-    <div x-data="{ open: false }" class="mb-8 border p-4 bg-gray-50 rounded-lg">
+    <div x-data="{ open: {{ $selectedTitle ? 'false' : 'true' }} }" class="mb-8 border p-4 bg-gray-50 rounded-lg">
+        
+        {{-- ヘッダー部分：クリックでタイトルの再選択エリアを開閉 --}}
         <div class="flex items-center justify-between cursor-pointer" @click="open = !open">
-            <h2 class="text-xl font-semibold">
-                タイトルで絞り込む
+            <h2 class="text-xl font-semibold flex items-center">
                 @if ($selectedTitle)
-                    <span class="text-sm font-normal text-blue-600 ml-2"> (現在: {{ $selectedTitle }})</span>
+                    <span class="text-blue-600">選択中: {{ $selectedTitle }}</span>
+                    <span class="text-xs font-normal text-gray-500 ml-3 bg-white px-2 py-1 border rounded shadow-sm">変更する</span>
+                @else
+                    タイトルで絞り込む
                 @endif
             </h2>
             
-            {{-- 展開アイコン（openの状態に応じて回転） --}}
             <svg class="w-5 h-5 transition-transform duration-300" 
-                 :class="{ 'rotate-180': open, 'rotate-0': !open }" 
-                 fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                :class="{ 'rotate-180': open, 'rotate-0': !open }" 
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
         </div>
 
-        <div x-show="open" x-collapse.duration.300ms class="mt-4 pt-4 border-t border-gray-300">
-            <div class="flex flex-wrap gap-2">
-
-                {{-- 1. 全て表示リンク --}}
+        {{-- タイトル一覧：選択後はデフォルトで隠れる --}}
+        <div x-show="open" x-collapse class="mt-4 pt-4 border-t border-gray-300">
+            <div class="flex flex-wrap gap-2 max-h-60 overflow-y-auto p-1">
                 <a href="{{ route('videos.index') }}" 
-                class="px-3 py-1 text-sm rounded-full transition duration-150 
-                         {{ $selectedTitle ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' : 'bg-blue-600 text-white font-bold' }}">
+                class="px-3 py-1 text-sm rounded-full transition {{ !$selectedTitle ? 'bg-blue-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
                     全ての動画 ({{ count($uniqueTitles) }})
                 </a>
 
-                {{-- 2. 重複のないタイトルごとのリンク --}}
                 @foreach ($uniqueTitles as $title)
-                    {{-- リンクURL: /videos?title=【URLエンコードされたタイトル】 --}}
                     <a href="{{ route('videos.index', ['title' => $title]) }}"
-                    class="px-3 py-1 text-sm rounded-full transition duration-150 
-                             {{ $selectedTitle === $title ? 'bg-blue-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                    class="px-3 py-1 text-sm rounded-full transition {{ $selectedTitle === $title ? 'bg-blue-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
                         {{ $title }}
                     </a>
                 @endforeach
             </div>
-    
-            {{-- ★ 追加：名前での絞り込みリスト --}}
-            @if($selectedTitle && count($uniqueNames) > 0)
-                <div class="mt-6 pt-4 border-t border-dashed border-gray-300">
-                    <p class="text-xs font-bold text-gray-500 mb-2">表示名でさらに絞り込む</p>
-                    <div class="flex flex-wrap gap-2">
-                        {{-- 全て表示（名前の絞り込み解除） --}}
-                        <a href="{{ route('videos.index', ['title' => $selectedTitle]) }}" 
-                        class="px-3 py-1 text-sm rounded-full transition {{ !$selectedName ? 'bg-indigo-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
-                            全ての「{{ $selectedTitle }}」
-                        </a>
-
-                        @foreach ($uniqueNames as $name)
-                            <a href="{{ route('videos.index', ['title' => $selectedTitle, 'name' => $name]) }}"
-                            class="px-3 py-1 text-sm rounded-full transition {{ $selectedName === $name ? 'bg-indigo-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
-                                {{ $name }}
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
-
-
         </div>
+
+        {{-- 名前での絞り込み：タイトルが選ばれている時だけ「常に表示」 --}}
+        @if($selectedTitle && count($uniqueNames) > 0)
+            <div class="mt-4 pt-4 border-t border-dashed border-gray-300">
+                <p class="text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">表示名でさらに絞り込む</p>
+                <div class="flex flex-wrap gap-2">
+                    <a href="{{ route('videos.index', ['title' => $selectedTitle]) }}" 
+                    class="px-3 py-1 text-sm rounded-full transition {{ !$selectedName ? 'bg-indigo-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                        全ての「{{ $selectedTitle }}」
+                    </a>
+
+                    @foreach ($uniqueNames as $name)
+                        <a href="{{ route('videos.index', ['title' => $selectedTitle, 'name' => $name]) }}"
+                        class="px-3 py-1 text-sm rounded-full transition {{ $selectedName === $name ? 'bg-indigo-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                            {{ $name }}
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        @endif
     </div>
 
     @if ($videos->count() > 0)
