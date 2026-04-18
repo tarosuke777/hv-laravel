@@ -1,28 +1,22 @@
 @foreach ($videos as $video)
     <li class="bg-white shadow-xl rounded-xl overflow-hidden p-5 flex flex-col items-center">
         <strong class="text-lg font-semibold mb-3">{{ $video->name }}</strong>
-        
-        <video 
-            controls
-            class="w-full h-auto rounded-lg mb-4 video-preview-target"
-            preload="metadata"
-            x-init="
-                $el.addEventListener('loadeddata', () => {
-                    if ($el.readyState >= 2) {
-                        $el.currentTime = 0;
-                        $el.pause();
-                    }
-                })
-            "
-        >
+
+        <video controls class="w-full h-auto rounded-lg mb-4 video-preview-target" preload="metadata"
+            x-init="$el.addEventListener('loadeddata', () => {
+                if ($el.readyState >= 2) {
+                    $el.currentTime = 0;
+                    $el.pause();
+                }
+            })">
             <source src="{{ $video->external_url }}" type="video/mp4">
             お使いのブラウザは動画タグに対応していません。
         </video>
 
         {{-- Alpine.js の名前更新ロジック (既存のまま) --}}
-        <div x-data="{ 
-            name: '{{ $video->name ?? '' }}', 
-            loading: false, 
+        <div x-data="{
+            name: '{{ $video->name ?? '' }}',
+            loading: false,
             showSuccess: false,
             errorMessage: '',
             async updateVideoName() {
@@ -61,13 +55,15 @@
                     <span x-show="loading" class="animate-spin text-lg">↻</span>
                 </button>
                 <p x-show="errorMessage" x-text="errorMessage" class="text-red-500 text-[10px] text-left mt-1"></p>
-                <div x-show="showSuccess" x-transition class="absolute -top-8 left-0 right-0 text-center text-green-600 text-xs font-bold bg-green-50 rounded py-1 border border-green-200">
+                <div x-show="showSuccess" x-transition
+                    class="absolute -top-8 left-0 right-0 text-center text-green-600 text-xs font-bold bg-green-50 rounded py-1 border border-green-200">
                     ✅ 保存しました
                 </div>
             </div>
         </div>
 
-        <a href="{{ $video->external_url }}" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium transition duration-150">
+        <a href="{{ $video->external_url }}" target="_blank"
+            class="text-blue-600 hover:text-blue-800 font-medium transition duration-150">
             別タブで再生
         </a>
     </li>

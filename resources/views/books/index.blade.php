@@ -11,11 +11,10 @@
                     <span class="text-sm font-normal text-blue-600 ml-2"> (現在: {{ $selectedTitle }})</span>
                 @endif
             </h2>
-            
+
             {{-- 展開アイコン（openの状態に応じて回転） --}}
-            <svg class="w-5 h-5 transition-transform duration-300" 
-                 :class="{ 'rotate-180': open, 'rotate-0': !open }" 
-                 fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg class="w-5 h-5 transition-transform duration-300" :class="{ 'rotate-180': open, 'rotate-0': !open }"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
         </div>
@@ -24,8 +23,8 @@
             <div class="flex flex-wrap gap-2">
 
                 {{-- 1. 全て表示リンク --}}
-                <a href="{{ route('books.index') }}" 
-                class="px-3 py-1 text-sm rounded-full transition duration-150 
+                <a href="{{ route('books.index') }}"
+                    class="px-3 py-1 text-sm rounded-full transition duration-150 
                          {{ $selectedTitle ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' : 'bg-blue-600 text-white font-bold' }}">
                     全ての動画 ({{ count($uniqueTitles) }})
                 </a>
@@ -34,7 +33,7 @@
                 @foreach ($uniqueTitles as $title)
                     {{-- リンクURL: /videos?title=【URLエンコードされたタイトル】 --}}
                     <a href="{{ route('books.index', ['title' => $title]) }}"
-                    class="px-3 py-1 text-sm rounded-full transition duration-150 
+                        class="px-3 py-1 text-sm rounded-full transition duration-150 
                              {{ $selectedTitle === $title ? 'bg-blue-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
                         {{ $title }}
                     </a>
@@ -48,17 +47,18 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach ($books as $book)
-                <div class="bg-white shadow-lg rounded-xl overflow-hidden flex flex-col border border-gray-200 hover:shadow-2xl transition duration-300">
-                    
+                <div
+                    class="bg-white shadow-lg rounded-xl overflow-hidden flex flex-col border border-gray-200 hover:shadow-2xl transition duration-300">
+
                     {{-- 表紙画像 (最初の1枚を表示) --}}
                     <div class="aspect-[3/4] bg-gray-200 relative">
-                        @if($book->pages->first())
-                            <img src="{{ $book->pages->first()->external_url }}" 
-                                 alt="cover" class="w-full h-full object-cover">
+                        @if ($book->pages->first())
+                            <img src="{{ $book->pages->first()->external_url }}" alt="cover"
+                                class="w-full h-full object-cover">
                         @else
                             <div class="flex items-center justify-center h-full text-gray-400">No Image</div>
                         @endif
-                        
+
                         {{-- ページ数バッジ --}}
                         <span class="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
                             {{ $book->pages->count() }}P
@@ -70,9 +70,8 @@
                         <p class="text-sm text-gray-500 mb-4">{{ $book->author ?? '不明' }}</p>
 
                         {{-- 閲覧ボタン --}}
-                        <a href="{{ route('books.show', ['book' => $book->id, 'external' => 'true']) }}" 
-                           target="_blank" 
-                           class="mt-auto w-full bg-blue-600 text-white text-center py-2 rounded-lg font-bold hover:bg-blue-700 transition">
+                        <a href="{{ route('books.show', ['book' => $book->id, 'external' => 'true']) }}" target="_blank"
+                            class="mt-auto w-full bg-blue-600 text-white text-center py-2 rounded-lg font-bold hover:bg-blue-700 transition">
                             読む (別タブ)
                         </a>
                     </div>
@@ -81,4 +80,3 @@
         </div>
     @endif
 @endsection
-

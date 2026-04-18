@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +10,8 @@
 
     <style>
         /* レイアウト崩れを防ぐための必須設定 */
-        html, body {
+        html,
+        body {
             margin: 0;
             padding: 0;
             height: 100vh;
@@ -19,7 +21,9 @@
         }
     </style>
 </head>
+
 <body class="bg-black"> {{-- 背景を黒にする --}}
     @yield('content')
 </body>
+
 </html>

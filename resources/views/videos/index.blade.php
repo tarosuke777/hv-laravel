@@ -1,13 +1,13 @@
 {{-- resources/views/videos/index.blade.php --}}
 
 {{-- ★ 1. layouts/app.blade.php を継承する ★ --}}
-@extends('layouts.app') 
+@extends('layouts.app')
 
 {{-- ★ 2. ページタイトルを定義する (app.blade.phpの@yield('title')に挿入される) ★ --}}
 @section('title', '動画一覧')
 
 {{-- ★ 3. メインコンテンツを定義する (app.blade.phpの@yield('content')に挿入される) ★ --}}
-@section('content')    
+@section('content')
     {{-- フィルター --}}
     @include('videos._filters_part')
 
@@ -25,57 +25,59 @@
     </div>
 
     <script>
-    function infiniteScroll() {
-        return {
-            page: 1,
-            loading: false,
-            hasMore: {{ $videos->hasMorePages() ? 'true' : 'false' }},
-            
-            init() {
-                // Intersection Observerで画面下部を監視
-                const observer = new IntersectionObserver((entries) => {
-                    if (entries[0].isIntersecting && !this.loading && this.hasMore) {
-                        this.fetchNextPage();
-                    }
-                }, { threshold: 0.1 });
+        function infiniteScroll() {
+            return {
+                page: 1,
+                loading: false,
+                hasMore: {{ $videos->hasMorePages() ? 'true' : 'false' }},
 
-                observer.observe(this.$refs.loadMore);
-            },
-
-            async fetchNextPage() {
-                this.loading = true;
-                this.page++;
-
-                // 現在のURL（検索パラメータ含む）にpage番号を付与
-                const url = new URL(window.location.href);
-                url.searchParams.set('page', this.page);
-
-                try {
-                    const response = await fetch(url, {
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest' // これでLaravelの $request->ajax() が true になる
+                init() {
+                    // Intersection Observerで画面下部を監視
+                    const observer = new IntersectionObserver((entries) => {
+                        if (entries[0].isIntersecting && !this.loading && this.hasMore) {
+                            this.fetchNextPage();
                         }
+                    }, {
+                        threshold: 0.1
                     });
 
-                    const html = await response.text();
+                    observer.observe(this.$refs.loadMore);
+                },
 
-                    if (html.trim() === '') {
-                        this.hasMore = false;
-                    } else {
-                        // 取得したHTMLをリストの最後に追加
-                        document.getElementById('video-list').insertAdjacentHTML('beforeend', html);
-                        
-                        // 動画の初回フレーム表示スクリプトが必要ならここで再実行
-                        // ※ loadeddataイベントは追加された要素でも自動で発火します
+                async fetchNextPage() {
+                    this.loading = true;
+                    this.page++;
+
+                    // 現在のURL（検索パラメータ含む）にpage番号を付与
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('page', this.page);
+
+                    try {
+                        const response = await fetch(url, {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest' // これでLaravelの $request->ajax() が true になる
+                            }
+                        });
+
+                        const html = await response.text();
+
+                        if (html.trim() === '') {
+                            this.hasMore = false;
+                        } else {
+                            // 取得したHTMLをリストの最後に追加
+                            document.getElementById('video-list').insertAdjacentHTML('beforeend', html);
+
+                            // 動画の初回フレーム表示スクリプトが必要ならここで再実行
+                            // ※ loadeddataイベントは追加された要素でも自動で発火します
+                        }
+                    } catch (error) {
+                        console.error('読み込みに失敗しました', error);
+                    } finally {
+                        this.loading = false;
                     }
-                } catch (error) {
-                    console.error('読み込みに失敗しました', error);
-                } finally {
-                    this.loading = false;
                 }
             }
         }
-    }
     </script>
 
 @endsection
