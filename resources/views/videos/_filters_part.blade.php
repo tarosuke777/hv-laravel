@@ -4,11 +4,13 @@
         <div class="flex items-center justify-between cursor-pointer group" @click="open = !open">
             <div class="flex flex-col">
                 <div class="mt-1 flex items-center">
-                    @if ($selectedTitle)
-                        <span class="text-base font-bold text-black">{{ $selectedTitle }}</span>
-                    @else
-                        <span class="text-base font-bold text-gray-400">すべてのタイトル</span>
-                    @endif
+                    <span class="text-base font-bold text-black">
+                        @if ($selectedTitle)
+                            {{ $selectedTitle }}
+                        @else
+                            タイトルで絞り込む
+                        @endif
+                    </span>
                 </div>
             </div>
         </div>
