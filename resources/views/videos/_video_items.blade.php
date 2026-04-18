@@ -1,6 +1,6 @@
 @foreach ($videos as $video)
     <li class="bg-white shadow-xl rounded-xl overflow-hidden p-5 flex flex-col items-center">
-        <strong class="text-lg font-semibold mb-3">{{ $video->full_title }}</strong>
+        <strong class="text-lg font-semibold mb-3">{{ $video->name }}</strong>
         
         <video 
             controls
