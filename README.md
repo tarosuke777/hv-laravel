@@ -9,7 +9,11 @@ php artisan make:model Image -a
 php artisan migrate
 
 # フォーマット
+## Php
 ./vendor/bin/pint
+## Blade
+nvm use node
+npx blade-formatter --write resources/views/**/*.blade.php
 
 # playwright
   npx playwright test
