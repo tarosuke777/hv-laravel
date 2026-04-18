@@ -44,8 +44,7 @@ export default function infiniteScroll(initialHasMore) {
                 if (html.trim() === "") {
                     this.hasMore = false;
                 } else {
-                    this.$refs.container
-                        .insertAdjacentHTML("beforeend", html);
+                    this.$refs.container.insertAdjacentHTML("beforeend", html);
                 }
             } catch (error) {
                 console.error("読み込みに失敗しました", error);
