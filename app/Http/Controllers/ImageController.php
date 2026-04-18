@@ -90,7 +90,6 @@ class ImageController extends Controller
         //
     }
 
-
     /**
      * Videoモデル全体の最新作成日時をJSONで取得する
      *

@@ -11,7 +11,7 @@ class Image extends Model
 {
     /** @use HasFactory<\Database\Factories\ImageFactory> */
     use HasFactory;
-    
+
     protected $fillable = [
         'title',
         'name',
@@ -28,7 +28,7 @@ class Image extends Model
     protected $appends = ['external_url'];
     // --- Scopes (クエリの部品) ---
 
-        /**
+    /**
      * 汎用検索フィルタ
      */
     public function scopeSearch($query, array $params)

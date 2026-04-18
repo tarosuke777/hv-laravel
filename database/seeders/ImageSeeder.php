@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ImageSeeder extends Seeder
@@ -12,7 +11,7 @@ class ImageSeeder extends Seeder
      */
     public function run(): void
     {
-        
+
         // 投入するテストデータ
         $images = [
             [
@@ -21,11 +20,11 @@ class ImageSeeder extends Seeder
                 'file_name' => 'laravel_migration_01.png',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-            ]
+            ],
         ];
 
         // データをテーブルに挿入
         DB::table('images')->insert($images);
-    
+
     }
 }
