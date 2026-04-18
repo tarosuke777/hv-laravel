@@ -1,4 +1,7 @@
 import "./bootstrap";
 import Alpine from "alpinejs";
+import infiniteScroll from "./infinite-scroll";
+
 window.Alpine = Alpine;
+Alpine.data("infiniteScroll", infiniteScroll);
 Alpine.start();
