@@ -14,6 +14,9 @@ php artisan migrate
 ## Blade
 nvm use node
 npx blade-formatter --write resources/views/**/*.blade.php
+## JS/CSS
+nvm use node
+npx prettier --write "resources/**/*.{js,css}"
 
 # playwright
   npx playwright test
