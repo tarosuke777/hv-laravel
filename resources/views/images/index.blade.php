@@ -11,27 +11,16 @@
     {{-- フィルター --}}
     @include('components.filters', ['indexRoute' => 'images.index'])
 
-    @if ($images->count() > 0)
-        <div class="mb-8">
-            {{ $images->appends(request()->query())->links() }}
-        </div>
-
-        {{-- Tailwind CSS のクラスで横3列のグリッドレイアウトを定義 --}}
-        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0 m-0">
+    <div x-data="infiniteScroll({{ $images->hasMorePages() ? 'true' : 'false' }})">
+        {{-- 動画グリッド --}}
+        <ul x-ref="container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0 m-0">
             @include('images._image_items', ['images' => $images])
         </ul>
 
-        <div class="mt-8">
-            {{ $images->appends(request()->query())->links() }}
+        {{-- 読み込み検知用ターゲット --}}
+        <div x-ref="loadMore" class="py-10 text-center">
+            <div x-show="loading" class="animate-spin text-3xl text-blue-500 inline-block">↻</div>
+            <p x-show="!hasMore && !loading" class="text-gray-500">すべての画像を読み込みました</p>
         </div>
-    @else
-        <p class="text-gray-500">
-            @if ($selectedTitle)
-                「{{ $selectedTitle }}」の動画は見つかりませんでした。
-            @else
-                画像 ファイルが見つかりません。
-            @endif
-        </p>
-    @endif
-
+    </div>
 @endsection
