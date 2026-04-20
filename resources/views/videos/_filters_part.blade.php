@@ -18,13 +18,13 @@
         {{-- タイトル一覧：初期表示は x-show='false' (openの初期値) なので閉じている --}}
         <div x-show="open" x-collapse class="mt-4 pt-4 border-t border-gray-300">
             <div class="flex flex-wrap gap-2 max-h-60 overflow-y-auto p-1">
-                <a href="{{ route('videos.index') }}"
+                <a href="{{ route($indexRoute) }}"
                     class="px-3 py-1 text-sm rounded-full transition {{ !$selectedTitle ? 'bg-blue-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
                     全て ({{ count($uniqueTitles) }})
                 </a>
 
                 @foreach ($uniqueTitles as $title)
-                    <a href="{{ route('videos.index', ['title' => $title]) }}"
+                    <a href="{{ route($indexRoute, ['title' => $title]) }}"
                         class="px-3 py-1 text-sm rounded-full transition {{ $selectedTitle === $title ? 'bg-blue-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
                         {{ $title }}
                     </a>
@@ -39,13 +39,13 @@
                     表示名でさらに絞り込む
                 </p>
                 <div class="flex flex-wrap gap-2">
-                    <a href="{{ route('videos.index', ['title' => $selectedTitle]) }}"
+                    <a href="{{ route($indexRoute, ['title' => $selectedTitle]) }}"
                         class="px-4 py-1.5 text-sm rounded-full transition {{ !$selectedName ? 'bg-indigo-600 text-white font-bold shadow-md' : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50' }}">
                         全て
                     </a>
 
                     @foreach ($uniqueNames as $name)
-                        <a href="{{ route('videos.index', ['title' => $selectedTitle, 'name' => $name]) }}"
+                        <a href="{{ route($indexRoute, ['title' => $selectedTitle, 'name' => $name]) }}"
                             class="px-4 py-1.5 text-sm rounded-full transition {{ $selectedName === $name ? 'bg-indigo-600 text-white font-bold shadow-md' : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50' }}">
                             {{ $name }}
                         </a>

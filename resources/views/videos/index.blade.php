@@ -9,10 +9,10 @@
 {{-- ★ 3. メインコンテンツを定義する (app.blade.phpの@yield('content')に挿入される) ★ --}}
 @section('content')
     {{-- フィルター --}}
-    @include('videos._filters_part')
+    @include('videos._filters_part', ['indexRoute' => 'videos.index'])
 
     <div x-data="infiniteScroll({{ $videos->hasMorePages() ? 'true' : 'false' }})">
-    {{-- 動画グリッド --}}
+        {{-- 動画グリッド --}}
         <ul x-ref="container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0 m-0">
             @include('videos._video_items', ['videos' => $videos])
         </ul>
