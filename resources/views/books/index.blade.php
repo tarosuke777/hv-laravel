@@ -3,44 +3,7 @@
 @section('title', '漫画一覧')
 
 @section('content')
-    <div x-data="{ open: false }" class="mb-8 border p-4 bg-gray-50 rounded-lg">
-        <div class="flex items-center justify-between cursor-pointer" @click="open = !open">
-            <h2 class="text-xl font-semibold">
-                タイトルで絞り込む
-                @if ($selectedTitle)
-                    <span class="text-sm font-normal text-blue-600 ml-2"> (現在: {{ $selectedTitle }})</span>
-                @endif
-            </h2>
-
-            {{-- 展開アイコン（openの状態に応じて回転） --}}
-            <svg class="w-5 h-5 transition-transform duration-300" :class="{ 'rotate-180': open, 'rotate-0': !open }"
-                fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-        </div>
-
-        <div x-show="open" x-collapse.duration.300ms class="mt-4 pt-4 border-t border-gray-300">
-            <div class="flex flex-wrap gap-2">
-
-                {{-- 1. 全て表示リンク --}}
-                <a href="{{ route('books.index') }}"
-                    class="px-3 py-1 text-sm rounded-full transition duration-150 
-                         {{ $selectedTitle ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' : 'bg-blue-600 text-white font-bold' }}">
-                    全ての動画 ({{ count($uniqueTitles) }})
-                </a>
-
-                {{-- 2. 重複のないタイトルごとのリンク --}}
-                @foreach ($uniqueTitles as $title)
-                    {{-- リンクURL: /videos?title=【URLエンコードされたタイトル】 --}}
-                    <a href="{{ route('books.index', ['title' => $title]) }}"
-                        class="px-3 py-1 text-sm rounded-full transition duration-150 
-                             {{ $selectedTitle === $title ? 'bg-blue-600 text-white font-bold' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
-                        {{ $title }}
-                    </a>
-                @endforeach
-            </div>
-        </div>
-    </div>
+    @include('components.filters', ['indexRoute' => 'books.index'])
 
     @if ($books->count() > 0)
         <div class="mt-8">{{ $books->links() }}</div>

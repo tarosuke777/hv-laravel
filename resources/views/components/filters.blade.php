@@ -33,7 +33,7 @@
         </div>
 
         {{-- 名前での絞り込み：タイトルが選択されていれば、タイトル一覧の開閉に関わらず「常に表示」 --}}
-        @if ($selectedTitle && count($uniqueNames) > 0)
+        @if ($selectedTitle && !empty($uniqueNames))
             <div class="mt-6 pt-4 border-t border-dashed border-gray-300">
                 <p class="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider">
                     表示名でさらに絞り込む
