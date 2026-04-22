@@ -27,6 +27,10 @@ class BookController extends Controller
         $books = $query->paginate(12);
         $uniqueTitles = Book::pluck('title')->unique();
 
+        if ($request->ajax()) {
+            return view('books._book_items', compact('books'))->render();
+        }
+
         return view('books.index', compact('books', 'selectedTitle', 'uniqueTitles'));
     }
 
