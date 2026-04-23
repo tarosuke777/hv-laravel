@@ -1,7 +1,6 @@
 @extends('layouts.viewer')
 
 @section('content')
-
     {{-- Swiper 本体 --}}
     <div class="swiper" dir="rtl">
         <div class="swiper-wrapper">
@@ -58,7 +57,7 @@
                     hide: true, // 操作していない時も常に表示するならfalse
                 }
             });
-    });
+        });
     </script>
 
     <style>
