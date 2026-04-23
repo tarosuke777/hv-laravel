@@ -20,7 +20,6 @@ class ImageController extends Controller
         $images = $query->orderBy('created_at', 'asc')
             ->paginate(9);
 
-            
         if ($request->ajax()) {
             return view('images._image_items', compact('images'))->render();
         }

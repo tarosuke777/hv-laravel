@@ -58,7 +58,8 @@
                                 <span x-show="loading" class="animate-spin text-lg">↻</span>
                             </button>
 
-                            <p x-show="errorMessage" x-text="errorMessage" class="text-red-500 text-[10px] text-left mt-1">
+                            <p x-show="errorMessage" x-text="errorMessage"
+                                class="text-red-500 text-[10px] text-left mt-1">
                             </p>
 
                             <div x-show="showSuccess" x-transition

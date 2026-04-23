@@ -8,8 +8,9 @@
                     </div>
 
                     {{-- 表紙画像 (最初の1枚を表示) --}}
-                    <a href="{{ route('books.show', ['book' => $book->id, 'external' => 'true']) }}" target="_blank" class="block aspect-[3/4] bg-gray-200 relative group">
-                            @if ($book->pages->first())
+                    <a href="{{ route('books.show', ['book' => $book->id, 'external' => 'true']) }}" target="_blank"
+                        class="block aspect-[3/4] bg-gray-200 relative group">
+                        @if ($book->pages->first())
                             <img src="{{ $book->pages->first()->external_url }}" alt="cover"
                                 class="w-full h-full object-cover">
                         @else
