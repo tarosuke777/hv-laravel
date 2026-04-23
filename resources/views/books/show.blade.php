@@ -1,7 +1,6 @@
 @extends('layouts.viewer')
 
 @section('content')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     {{-- Swiper 本体 --}}
     <div class="swiper" dir="rtl">
@@ -25,40 +24,41 @@
         <div class="swiper-scrollbar"></div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        const swiper = new Swiper(".swiper", {
-            rtl: true,
-            loop: false,
-            breakpoints: {
-                spaceBetween: 0, // スライド間の余白を0にする
-                1024: {
-                    slidesPerView: 2,
-                    slidesPerGroup: 2,
+        document.addEventListener('DOMContentLoaded', () => {
+            const swiper = new Swiper(".swiper", {
+                rtl: true,
+                loop: false,
+                breakpoints: {
+                    spaceBetween: 0, // スライド間の余白を0にする
+                    1024: {
+                        slidesPerView: 2,
+                        slidesPerGroup: 2,
+                    },
+                    // それ以下のとき（スマホなど）は1枚表示
+                    0: {
+                        slidesPerView: 1,
+                        slidesPerGroup: 1,
+                    }
                 },
-                // それ以下のとき（スマホなど）は1枚表示
-                0: {
-                    slidesPerView: 1,
-                    slidesPerGroup: 1,
+                pagination: {
+                    el: ".swiper-pagination",
+                    type: "fraction", // "1 / 10" 形式
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                keyboard: {
+                    enabled: true,
+                },
+                scrollbar: {
+                    el: ".swiper-scrollbar",
+                    draggable: true, // ドラッグで操作可能にする
+                    hide: true, // 操作していない時も常に表示するならfalse
                 }
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                type: "fraction", // "1 / 10" 形式
-            },
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            keyboard: {
-                enabled: true,
-            },
-            scrollbar: {
-                el: ".swiper-scrollbar",
-                draggable: true, // ドラッグで操作可能にする
-                hide: true, // 操作していない時も常に表示するならfalse
-            }
-        });
+            });
+    });
     </script>
 
     <style>
