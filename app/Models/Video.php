@@ -61,7 +61,7 @@ class Video extends Model
      */
     public static function getUniqueTitles(): array
     {
-        return self::distinct()->pluck('title')->toArray();
+        return self::distinct()->orderBy('title', 'asc')->pluck('title')->toArray();
     }
 
     /**
