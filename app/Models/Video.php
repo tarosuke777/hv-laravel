@@ -35,7 +35,14 @@ class Video extends Model
     {
         return $query
             ->when($params['title'] ?? null, fn ($q, $title) => $q->where('title', $title))
-            ->when($params['name'] ?? null, fn ($q, $name) => $q->where('name', $name));
+            ->when($params['name'] ?? null, function ($q, $name) {
+                // "未設定" という文字列が渡された場合は whereNull を実行
+                if ($name === '未設定') {
+                    return $q->whereNull('name');
+                }
+                // それ以外は通常通り一致検索
+                return $q->where('name', $name);
+            });
     }
 
     /**
@@ -74,9 +81,14 @@ class Video extends Model
         }
 
         return self::search(['title' => $title])
-            ->hasName()
+            // ->hasName()
             ->distinct()
             ->pluck('name')
+            ->map(function ($name) {
+                // NULL または 空文字 の場合に "未設定" という文字列に置き換える
+                return (is_null($name) || $name === '') ? '未設定' : $name;
+            })
+            ->unique() // map後に重複（元々"未設定"という文字列があった場合など）を排除
             ->toArray();
     }
 
