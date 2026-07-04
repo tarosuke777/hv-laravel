@@ -1,8 +1,8 @@
-version: '3.8'
 name: hv
 
 services:
     hv-ap:
+        container_name: hv-ap
         build:
             context: .
             dockerfile: Dockerfile
@@ -30,6 +30,7 @@ services:
         networks:
             - home_network
     hv-web:
+        container_name: hv-web
         build:
             context: .
             dockerfile: Dockerfile.nginx
