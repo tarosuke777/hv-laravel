@@ -10,7 +10,8 @@ Route::get('/', function () {
     return redirect()->route('videos.index');
 });
 
-Route::prefix('hv')->group(function () {
+// サブドメイン化するため、/hvを外す
+// Route::prefix('hv')->group(function () {
 
     Route::get('/', function () {
         return redirect()->route('videos.index');
@@ -38,4 +39,4 @@ Route::prefix('hv')->group(function () {
         ->withoutMiddleware(ValidateCsrfToken::class);
     Route::get('/api/images/max-timestamp', [ImageController::class, 'fetchMaxTimestamp']);
 
-});
+// });

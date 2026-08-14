@@ -18,8 +18,8 @@ services:
             DB_PASSWORD_FILE: /run/secrets/mysql_user_password
             APP_KEY_FILE: /run/secrets/secret_key_base
             VIDEO_BASE_URL: http://192.168.10.11:8080/
-            APP_URL: http://192.168.10.10/hv
-            ASSET_URL: http://192.168.10.10/hv
+            APP_URL: http://192.168.10.10
+            ASSET_URL: http://192.168.10.10
         secrets:
             - secret_key_base
             - mysql_user_password
