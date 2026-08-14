@@ -10,4 +10,12 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+    server: {
+        host: '0.0.0.0', // すべてのインターフェースで待ち受ける
+        port: 5173,
+        strictPort: true,
+        hmr: {
+            host: 'localhost', // ブラウザからのHMR接続先を明示的にlocalhostにする
+        },
+    },
 });
