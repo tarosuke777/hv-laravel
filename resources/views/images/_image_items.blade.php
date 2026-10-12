@@ -21,7 +21,7 @@
                             this.loading = true;
                             this.errorMessage = '';
                             try {
-                                let response = await fetch('{{ route('images.updateName', $image->id) }}', {
+                                let response = await fetch('{{ route('images.updateName', $image->id, false) }}', {
                                     method: 'PATCH',
                                     headers: {
                                         'Content-Type': 'application/json',
