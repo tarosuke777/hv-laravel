@@ -35,6 +35,6 @@ return [
         ],
     ],
 
-    'video_host' => env('VIDEO_BASE_URL', 'http://192.168.10.11:8080/'),
+    'video_host' => env('VIDEO_BASE_URL', 'http://file.home.arpa:8080/'),
 
 ];
