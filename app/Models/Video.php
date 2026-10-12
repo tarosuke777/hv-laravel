@@ -102,7 +102,7 @@ class Video extends Model
     {
         return Attribute::make(
             get: function (mixed $value, array $attributes) {
-                $baseUrl = config('services.video_host', 'http://file.home.arpa:8080/');
+                $baseUrl = config('services.video_host', 'http://192.168.10.199:8080/');
 
                 return Str::finish($baseUrl, 'videos/').$attributes['file_name'];
             }
