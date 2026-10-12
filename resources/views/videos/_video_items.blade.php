@@ -23,7 +23,7 @@
                 this.loading = true;
                 this.errorMessage = '';
                 try {
-                    let response = await fetch('{{ route('videos.updateName', $video->id) }}', {
+                    let response = await fetch('{{ route('videos.updateName', $video->id, false) }}', {
                         method: 'PATCH',
                         headers: {
                             'Content-Type': 'application/json',
